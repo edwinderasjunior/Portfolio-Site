@@ -29,6 +29,6 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./build/
-          server-dir: ./domains/edwinjr.com/public_html/
+          server-dir: /home/edwinjrc31/domains/edwinjr.com/public_html/
           port: 21
           protocol: ftps
