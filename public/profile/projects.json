@@ -1,0 +1,68 @@
+{
+  "projects": [
+    {
+      "image": "images/projects/Pygame.jpg",
+      "title": "FlappyMC Pygame",
+      "bodyText": "- **Authors:** Edwin Deras Jr.\n- **Description:** A simple Flappy Bird clone made with Pygame in Python using Minecraft Assets",
+      "links": [
+        {
+          "text": "GitHub",
+          "href": "https://github.com/edwinderasjunior/FlappyMC"
+        },
+        {
+          "text": "Itch.io",
+          "href": "https://ricewrap.itch.io/flappymc"
+        },
+        {
+          "text": "Live",
+          "href": "/game"
+        }
+      ],
+      "tags": [
+        "Python",
+        "Pygame",
+        "School Project"
+      ]
+    },
+    {
+      "image": "images/projects/Security1.png",
+      "title": "SEC-INFRA-01: Security Infrastructure (NIST Alignment Profile)",
+      "bodyText": "- **Authors:** Edwin Deras Jr. & Marwin Deras\n- **Project Focus:** Implementing a security infrastructure aligned with the NIST CSF framework.\n- **Key Partner:** Eagle Eye Security (Dummy)\n- **Baseline Framework:** NIST SP 800-30 Auditing.",
+      "links": [
+        {
+          "text": "Security PDF",
+          "href": "images/security.pdf"
+        },
+        {
+          "text": "Report PDF",
+          "href": "images/report2.pdf"
+        },
+        {
+          "text": "▶ Watch Project Video",
+          "href": "images/projects/Project2Video.mp4"
+        }
+      ],
+      "tags": [
+        "Cybersecurity",
+        "NIST CSF",
+        "Risk Management"
+      ]
+    },
+    {
+      "image": "images/projects/Security2.png",
+      "title": "SEC-BCP-01: Business Continuity (NIST Alignment Profile)",
+      "bodyText": "- **Authors:** Edwin Deras Jr. & Marwin Deras\n- **Project Focus:** Implementing a business continuity plan aligned with the NIST CSF framework.\n- **Key Partner:** Eagle Eye Security (Dummy)\n- **Baseline Framework:** NIST SP 800-30 Auditing.",
+      "links": [
+        {
+          "text": "Continuity PDF",
+          "href": "images/security2.pdf"
+        }
+      ],
+      "tags": [
+        "Business Continuity",
+        "Risk Assessment",
+        "NIST SP 800-30"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+    "social": [
+        {
+            "network" : "linkedin",
+            "href": "https://www.linkedin.com/in/edwinderasjr/"
+        },
+        {
+            "network" : "github",
+            "href": "https://github.com/edwinderasjunior"
+        },
+        {
+            "network" : "email",
+            "href": "mailto:me@edwinjr.com"
+        }
+    ]
+}

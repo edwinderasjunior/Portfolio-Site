@@ -1,0 +1,55 @@
+/* ==========================================================================
+   PRIMARY APP LAYOUT - CLEAN CENTERING (YOUR WORKING LAYOUT)
+   ========================================================================== */
+
+.App {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+}
+
+/* Safely centers any loose columns or content blocks without breaking font scaling */
+.row, .grid {
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+/* ==========================================================================
+   🚀 TARGETED CUSTOM CURSOR OVERRIDES (FIXES TINY FONT SIZE)
+   We removed the universal '*' selector and explicitly targeted only interactive
+   elements. This keeps your custom cursor working perfectly but stops it from
+   messing with the font sizes or properties of your 'Skills' text headings!
+   ========================================================================== */
+
+html, 
+body, 
+#root, 
+.App, 
+nav, 
+a, 
+button, 
+[role="button"],
+.dock-wrapper,
+.dock-wrapper *, 
+.dock-card,
+.dock-card *, 
+.dock-tooltip-wrapper,
+.dock-tooltip-wrapper *,
+a:hover,
+button:hover,
+[role="button"]:hover {
+  cursor: none !important;
+}
+
+/* Keeps the classic text typing indicator active for inputs */
+input, 
+textarea, 
+select, 
+[contenteditable] {
+  cursor: text !important;
+}

@@ -1,0 +1,22 @@
+{
+    "education":[
+        {
+            "title": "May 2023",
+            "cardTitle": "Pikes Peak Community College",
+            "cardSubtitle":"Computer Information Systems - Associate's Degree",
+            "cardDetailedText": "3.78 GPA, Phi Theta Kappa Honor Society, Dean's List",
+            "icon" : {
+                "src": "images/education/download.png"
+            }
+        },
+        {
+            "title": "May 2028",
+            "cardTitle": "University of Colorado Colorado Springs",
+            "cardSubtitle":"Computer Science / Cybersecurity - Bachelor's Degree",
+            "cardDetailedText": "",
+            "icon" : {
+                "src": "images/education/lorem-ipsum.png"
+            }
+        }
+    ]
+}
