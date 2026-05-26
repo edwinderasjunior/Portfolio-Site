@@ -6,16 +6,39 @@ import { Container } from 'react-bootstrap';
 import Header from './Header';
 import endpoints from '../constants/endpoints';
 import FallbackSpinner from './FallbackSpinner';
+import LogoLoop from './LogoLoop';
 
 const styles = {
-  iconStyle: {
-    height: 75,
-    width: 75,
-    margin: 10,
-    marginBottom: 0,
-  },
   introTextContainer: {
     whiteSpace: 'pre-wrap',
+    marginBottom: '2rem',
+  },
+  skillRowTitle: {
+    fontWeight: 600,
+    marginTop: '2rem',
+    marginBottom: '1rem',
+  },
+  /* This shrinks the container box width and handles absolute centering */
+  loopContainerWrapper: {
+    maxWidth: '600px', // Shrinks the boxes down! Adjust this number to make it wider or narrower
+    width: '100%',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    overflow: 'hidden',
+  },
+  skillItemWrapper: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
+    padding: '0 10px',
+  },
+  skillTextLabel: {
+    marginTop: '8px',
+    fontSize: '0.95rem',
+    fontWeight: 500,
+    color: '#ffffff',
   },
 };
 
@@ -43,29 +66,44 @@ function Skills(props) {
       <Header title={header} />
       {data ? (
         <Fade>
-          <div className="section-content-container">
-            <Container>
+          <div className="section-content-container" style={{ background: 'transparent', backgroundColor: 'transparent' }}>
+            <Container style={{ background: 'transparent', backgroundColor: 'transparent' }}>
               {renderSkillsIntro(data.intro)}
-              {data.skills?.map((rows) => (
-                <div key={rows.title}>
-                  <br />
-                  <h3>{rows.title}</h3>
-                  {rows.items.map((item) => (
-                    <div key={item.title} style={{ display: 'inline-block' }}>
-                      <img
-                        style={styles.iconStyle}
-                        src={item.icon}
-                        alt={item.title}
-                      />
-                      <p>{item.title}</p>
-                    </div>
-                  ))}
+
+              {data.skills?.map((category, index) => (
+                <div key={category.title}>
+                  <h3 style={styles.skillRowTitle}>{category.title}</h3>
+
+                  {/* Wrapped the loop inside our smaller centered box width wrapper */}
+                  <div style={styles.loopContainerWrapper}>
+                    <LogoLoop
+                      speed={50}
+                      direction={index % 2 === 0 ? 'left' : 'right'}
+                      logoHeight={75}
+                      gap={50}
+                      hoverSpeed={0}
+                      fadeOut
+                    >
+                      {category.items.map((item) => (
+                        <div key={item.title} style={styles.skillItemWrapper}>
+                          <img
+                            src={item.icon}
+                            alt={item.title}
+                            style={{ height: '75px', width: '75px', objectFit: 'contain' }}
+                          />
+                          <p style={styles.skillTextLabel}>{item.title}</p>
+                        </div>
+                      ))}
+                    </LogoLoop>
+                  </div>
                 </div>
               ))}
             </Container>
           </div>
         </Fade>
-      ) : <FallbackSpinner /> }
+      ) : (
+        <FallbackSpinner />
+      )}
     </>
   );
 }

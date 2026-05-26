@@ -13,8 +13,8 @@ import {
 } from 'lucide-react';
 import endpoints from '../constants/endpoints';
 import AppContext from '../AppContext';
-import ThemeToggler from './ThemeToggler';
 import { Dock, DockIcon } from './Dock';
+import GlassSurface from './GlassSurface';
 import './NavBar.css';
 
 const styles = {
@@ -27,6 +27,7 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    pointerEvents: 'auto',
   },
   innerItemLink: {
     display: 'flex',
@@ -36,18 +37,12 @@ const styles = {
     height: '100%',
     borderRadius: '50%',
     textDecoration: 'none',
-    transition: 'background-color 0.2s ease',
+    transition: 'background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease',
   },
   iconVector: {
     width: '20px',
     height: '20px',
-  },
-  dividerLine: {
-    width: '1px',
-    height: '28px',
-    backgroundColor: 'rgba(255, 255, 255, 0.16)',
-    alignSelf: 'center',
-    margin: '0 4px',
+    transition: 'stroke 0.2s ease',
   },
 };
 
@@ -84,50 +79,80 @@ const NavBar = () => {
     return { component: HomeIcon, color: inactiveColor };
   };
 
+  // Calculate clean layout width bounding metrics based on navigation list sizes
+  const calculatedWidth = navigationItems.length * 60 + 32;
+
   return (
     <div style={styles.dockFixedWrapper}>
       {navigationItems.length > 0 && (
-        <Dock>
-          {navigationItems.map((item) => {
-            const isActive = location.pathname === item.href;
-            const { component: IconComponent, color: defaultColor } = getIconConfig(item.title);
+        <GlassSurface
+          width={calculatedWidth}
+          height={64}
+          borderRadius={24}
+          borderWidth={0.08}
+          brightness={60}
+          opacity={0.9}
+          blur={8}
+          backgroundOpacity={0.03}
+          style={{
+            border: '1px solid rgba(255, 255, 255, 0.15)',
+            boxShadow: '0 12px 40px 0 rgba(0, 0, 0, 0.4)',
+          }}
+        >
+          <Dock
+            className="bg-transparent"
+            style={{
+              background: 'transparent',
+              backgroundColor: 'transparent',
+              border: 'none',
+              boxShadow: 'none',
+              backdropFilter: 'none',
+              WebkitBackdropFilter: 'none',
+              width: '100%',
+              height: '100%',
+              padding: '4px 12px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '12px',
+            }}
+          >
+            {navigationItems.map((item) => {
+              const isActive = location.pathname === item.href;
+              const { component: IconComponent, color: defaultColor } = getIconConfig(item.title);
 
-            return (
-              <div key={item.href} className="dock-tooltip-wrapper">
-                <DockIcon>
-                  <Link
-                    to={item.href}
-                    style={{
-                      ...styles.innerItemLink,
-                      backgroundColor: isActive ? 'rgba(0, 0, 0, 0.52)' : 'transparent',
-                    }}
-                    aria-label={item.title}
+              return (
+                <div key={item.href} className="dock-tooltip-wrapper">
+                  <DockIcon
+                    style={{ background: 'transparent', backgroundColor: 'transparent' }}
                   >
-                    <IconComponent
-                      style={styles.iconVector}
-                      stroke={isActive ? activeColor : defaultColor}
-                    />
-                  </Link>
-                </DockIcon>
-                <div className="dock-tooltip-content">{item.title}</div>
-              </div>
-            );
-          })}
-
-          <div style={styles.dividerLine} aria-hidden="true" />
-
-          <div className="dock-tooltip-wrapper">
-            <DockIcon>
-              <div style={styles.innerItemLink}>
-                <ThemeToggler
-                  toggleTheme={darkMode?.toggle}
-                  iconColor={inactiveColor}
-                />
-              </div>
-            </DockIcon>
-            <div className="dock-tooltip-content">Toggle Theme</div>
-          </div>
-        </Dock>
+                    <Link
+                      to={item.href}
+                      style={{
+                        ...styles.innerItemLink,
+                        backgroundColor: isActive
+                          ? 'rgba(255, 255, 255, 0.12)'
+                          : 'transparent',
+                        border: isActive
+                          ? '1px solid rgba(255, 255, 255, 0.25)'
+                          : '1px solid transparent',
+                        backdropFilter: isActive ? 'blur(8px)' : 'none',
+                        WebkitBackdropFilter: isActive ? 'blur(8px)' : 'none',
+                      }}
+                      aria-label={item.title}
+                    >
+                      <IconComponent
+                        style={styles.iconVector}
+                        stroke={isActive ? activeColor : defaultColor}
+                      />
+                    </Link>
+                  </DockIcon>
+                  <div className="dock-tooltip-content">{item.title}</div>
+                </div>
+              );
+            })}
+          </Dock>
+        </GlassSurface>
       )}
     </div>
   );

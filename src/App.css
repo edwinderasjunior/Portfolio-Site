@@ -53,3 +53,26 @@ select,
 [contenteditable] {
   cursor: text !important;
 }
+
+/* ==========================================================================
+   Heading Styles (Upscales titles and locks them to the dead center)
+   ========================================================================== */
+
+.header {
+  font-size: 2.5rem; /* Large, bold section titles */
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-bottom: 2rem;
+  
+  /* Centers the text layout completely */
+  text-align: center; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  /* Standard container constraints */
+  max-width: 1140px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}

@@ -2,7 +2,7 @@
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 
-export function DockIcon({ children, mouseX, isHovered, onMouseEnter, onMouseLeave }) {
+export function DockIcon({ children, mouseX, isHovered, onMouseEnter, onMouseLeave, style }) {
   const boundsRef = useRef(null);
 
   let scaleFactor = 1;
@@ -26,6 +26,7 @@ export function DockIcon({ children, mouseX, isHovered, onMouseEnter, onMouseLea
     transition: mouseX === null ? 'transform 0.2s ease, width 0.2s ease, height 0.2s ease' : 'none',
     transform: `scale(${scaleFactor}) ${isHovered ? 'translateY(-4px)' : 'translateY(0)'}`,
     cursor: 'pointer',
+    ...style, // Merges custom style properties passed down from parent components cleanly
   };
 
   return (
@@ -44,16 +45,23 @@ DockIcon.propTypes = {
   children: PropTypes.node.isRequired,
   mouseX: PropTypes.number,
   isHovered: PropTypes.bool,
-  onMouseEnter: PropTypes.func.isRequired,
-  onMouseLeave: PropTypes.func.isRequired,
+  onMouseEnter: PropTypes.func,
+  onMouseLeave: PropTypes.func,
+  style: PropTypes.objectOf(PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ])),
 };
 
 DockIcon.defaultProps = {
   mouseX: null,
   isHovered: false,
+  onMouseEnter: () => {},
+  onMouseLeave: () => {},
+  style: {},
 };
 
-export function Dock({ children }) {
+export function Dock({ children, style, className }) {
   const [mouseX, setMouseX] = useState(null);
   const [hoveredIndex, setHoveredIndex] = useState(null);
 
@@ -62,14 +70,9 @@ export function Dock({ children }) {
     alignItems: 'flex-end',
     gap: '12px',
     padding: '10px 16px',
-    backgroundColor: 'rgba(255, 255, 255, 0.08)',
-    backdropFilter: 'blur(16px)',
-    WebkitBackdropFilter: 'blur(16px)',
-    borderRadius: '9999px',
-    border: '1px solid rgba(255, 255, 255, 0.12)',
-    boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.24)',
     height: '64px',
     boxSizing: 'border-box',
+    ...style, // Allows the glass container in NavBar to override background/borders smoothly
   };
 
   const handleMouseMove = (e) => {
@@ -84,6 +87,7 @@ export function Dock({ children }) {
   return (
     <div
       style={trackStyle}
+      className={className}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       role="toolbar"
@@ -108,4 +112,14 @@ export function Dock({ children }) {
 
 Dock.propTypes = {
   children: PropTypes.node.isRequired,
+  className: PropTypes.string,
+  style: PropTypes.objectOf(PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ])),
+};
+
+Dock.defaultProps = {
+  className: '',
+  style: {},
 };
