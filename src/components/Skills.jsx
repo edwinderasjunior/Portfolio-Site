@@ -6,7 +6,7 @@ import { Container } from 'react-bootstrap';
 import Header from './Header';
 import endpoints from '../constants/endpoints';
 import FallbackSpinner from './FallbackSpinner';
-import LogoLoop from './LogoLoop';
+import { LogoLoop } from './LogoLoop';
 
 const styles = {
   introTextContainer: {
