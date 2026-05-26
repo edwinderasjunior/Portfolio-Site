@@ -18,9 +18,9 @@ const styles = {
     marginTop: '2rem',
     marginBottom: '1rem',
   },
-  /* This shrinks the container box width and handles absolute centering */
+  /* This shrinks row widths and handles absolute centering */
   loopContainerWrapper: {
-    maxWidth: '600px', // Shrinks the boxes down! Adjust this number to make it wider or narrower
+    maxWidth: '600px',
     width: '100%',
     marginLeft: 'auto',
     marginRight: 'auto',
@@ -74,7 +74,6 @@ function Skills(props) {
                 <div key={category.title}>
                   <h3 style={styles.skillRowTitle}>{category.title}</h3>
 
-                  {/* Wrapped the loop inside our smaller centered box width wrapper */}
                   <div style={styles.loopContainerWrapper}>
                     <LogoLoop
                       speed={50}
