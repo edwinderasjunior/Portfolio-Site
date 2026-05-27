@@ -25,7 +25,7 @@ const styles = {
   },
   imageFrameStyle: {
     width: '100%',
-    height: '240px',
+    height: '300px',
     objectFit: 'cover',
     objectPosition: 'top',
     borderBottom: '1px solid rgba(255, 255, 255, 0.08)',

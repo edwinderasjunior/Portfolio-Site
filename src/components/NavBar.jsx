@@ -44,6 +44,15 @@ const styles = {
     height: '20px',
     transition: 'stroke 0.2s ease',
   },
+  verticalDividerStyle: {
+    alignSelf: 'center',
+    height: '24px',
+    width: '1px',
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    marginLeft: '4px',
+    marginRight: '4px',
+    display: 'inline-block',
+  },
 };
 
 const NavBar = () => {
@@ -79,8 +88,8 @@ const NavBar = () => {
     return { component: HomeIcon, color: inactiveColor };
   };
 
-  // Calculate clean layout width bounding metrics based on navigation list sizes
-  const calculatedWidth = navigationItems.length * 60 + 32;
+  const hasResume = navigationItems.some((item) => item.title.toLowerCase().includes('resume'));
+  const calculatedWidth = navigationItems.length * 60 + 32 + (hasResume ? 24 : 0);
 
   return (
     <div style={styles.dockFixedWrapper}>
@@ -120,35 +129,45 @@ const NavBar = () => {
             {navigationItems.map((item) => {
               const isActive = location.pathname === item.href;
               const { component: IconComponent, color: defaultColor } = getIconConfig(item.title);
+              const isResume = item.title.toLowerCase().includes('resume');
 
               return (
-                <div key={item.href} className="dock-tooltip-wrapper">
-                  <DockIcon
-                    style={{ background: 'transparent', backgroundColor: 'transparent' }}
-                  >
-                    <Link
-                      to={item.href}
-                      style={{
-                        ...styles.innerItemLink,
-                        backgroundColor: isActive
-                          ? 'rgba(255, 255, 255, 0.12)'
-                          : 'transparent',
-                        border: isActive
-                          ? '1px solid rgba(255, 255, 255, 0.25)'
-                          : '1px solid transparent',
-                        backdropFilter: isActive ? 'blur(8px)' : 'none',
-                        WebkitBackdropFilter: isActive ? 'blur(8px)' : 'none',
-                      }}
-                      aria-label={item.title}
+                <React.Fragment key={item.href}>
+                  {isResume && (
+                    <span style={styles.verticalDividerStyle} />
+                  )}
+
+                  <div className="dock-tooltip-wrapper">
+                    <DockIcon
+                      style={{ background: 'transparent', backgroundColor: 'transparent' }}
                     >
-                      <IconComponent
-                        style={styles.iconVector}
-                        stroke={isActive ? activeColor : defaultColor}
-                      />
-                    </Link>
-                  </DockIcon>
-                  <div className="dock-tooltip-content">{item.title}</div>
-                </div>
+                      <Link
+                        to={item.href}
+                        style={{
+                          ...styles.innerItemLink,
+                          backgroundColor: isActive
+                            ? 'rgba(255, 255, 255, 0.12)'
+                            : 'transparent',
+                          border: isActive
+                            ? '1px solid rgba(255, 255, 255, 0.25)'
+                            : '1px solid transparent',
+                          backdropFilter: isActive ? 'blur(8px)' : 'none',
+                          /* 🎯 Split onto multiple lines to pass strict max-len constraints */
+                          WebkitBackdropFilter: isActive
+                            ? 'blur(8px)'
+                            : 'none',
+                        }}
+                        aria-label={item.title}
+                      >
+                        <IconComponent
+                          style={styles.iconVector}
+                          stroke={isActive ? activeColor : defaultColor}
+                        />
+                      </Link>
+                    </DockIcon>
+                    <div className="dock-tooltip-content">{item.title}</div>
+                  </div>
+                </React.Fragment>
               );
             })}
           </Dock>
