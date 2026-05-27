@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import useDarkMode from 'use-dark-mode';
 import { SmoothCursor } from './components/magicui/SmoothCursor';
@@ -10,8 +10,19 @@ import MainApp from './MainApp';
 import GlobalStyles from './theme/GlobalStyles';
 import { darkTheme } from './theme/themes';
 import DotGrid from './components/DotGrid';
+import PdfViewerPage from './components/PdfViewerPage';
 
 const LazySilk = React.lazy(() => import('./components/Silk'));
+
+const contentContainerStyle = {
+  position: 'absolute',
+  inset: 0,
+  zIndex: 1,
+  width: '100%',
+  height: '100%',
+  pointerEvents: 'none',
+  overflowY: 'auto',
+};
 
 function App() {
   const darkMode = useDarkMode(true);
@@ -69,18 +80,13 @@ function App() {
           </div>
 
           {/* Content Container Layer */}
-          <div
-            style={{
-              position: 'absolute',
-              inset: 0,
-              zIndex: 1,
-              width: '100%',
-              height: '100%',
-              pointerEvents: 'none',
-            }}
-          >
+          <div style={contentContainerStyle}>
             <BrowserRouter>
-              <MainApp />
+              {/* 🎯 Updated to v5 Switch handling */}
+              <Switch>
+                <Route path="/view-pdf" component={PdfViewerPage} />
+                <Route path="*" component={MainApp} />
+              </Switch>
             </BrowserRouter>
           </div>
 

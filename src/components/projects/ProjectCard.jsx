@@ -3,6 +3,7 @@ import { Col } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { ThemeContext } from 'styled-components';
 import ReactMarkdown from 'react-markdown';
+import { Link } from 'react-router-dom';
 
 const styles = {
   glassCardContainer: {
@@ -44,7 +45,6 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
   },
-  // 🎯 Custom style rules for pristine white link badges
   linkButtonStyle: {
     marginRight: '8px',
     marginTop: '12px',
@@ -54,6 +54,8 @@ const styles = {
     borderStyle: 'solid',
     backgroundColor: 'transparent',
     transition: 'all 0.2s ease',
+    display: 'inline-block',
+    textDecoration: 'none',
   },
 };
 
@@ -91,28 +93,60 @@ const ProjectCard = (props) => {
           </div>
           {project.links && (
             <div className="card-project-links" style={{ marginTop: 'auto' }}>
-              {project.links.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn"
-                  style={styles.linkButtonStyle}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = '#ffffff';
-                    e.currentTarget.style.color = '#0f172a';
-                    e.currentTarget.style.borderColor = '#ffffff';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = 'transparent';
-                    e.currentTarget.style.color = '#ffffff';
-                    e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.4)';
-                  }}
-                >
-                  {link.text}
-                </a>
-              ))}
+              {project.links.map((link) => {
+                const hrefStr = link.href ? String(link.href).toLowerCase() : '';
+                const textStr = link.text ? String(link.text).toLowerCase() : '';
+
+                const isPdf = hrefStr.includes('.pdf') || textStr.includes('pdf');
+
+                if (isPdf) {
+                  const targetUrl = `/view-pdf?file=${encodeURIComponent(link.href)}`;
+                  return (
+                    <Link
+                      key={link.href}
+                      to={targetUrl}
+                      target="_blank"
+                      className="btn"
+                      style={styles.linkButtonStyle}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.backgroundColor = '#ffffff';
+                        e.currentTarget.style.color = '#0f172a';
+                        e.currentTarget.style.borderColor = '#ffffff';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.backgroundColor = 'transparent';
+                        e.currentTarget.style.color = '#ffffff';
+                        e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.4)';
+                      }}
+                    >
+                      {link.text}
+                    </Link>
+                  );
+                }
+
+                return (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn"
+                    style={styles.linkButtonStyle}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = '#ffffff';
+                      e.currentTarget.style.color = '#0f172a';
+                      e.currentTarget.style.borderColor = '#ffffff';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = 'transparent';
+                      e.currentTarget.style.color = '#ffffff';
+                      e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.4)';
+                    }}
+                  >
+                    {link.text}
+                  </a>
+                );
+              })}
             </div>
           )}
         </div>
