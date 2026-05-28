@@ -23,7 +23,6 @@
   width: 100%;
   display: flex;
   align-items: center;
-  justifyContent: space-between;
   padding: 2em;
   background: transparent;
   pointer-events: none;
@@ -99,7 +98,6 @@
   flex: 0 0 14px;
   display: inline-flex;
   align-items: center;
-  justifyContent: center;
   will-change: transform;
 }
 
@@ -317,4 +315,17 @@
     border-right: none;
     padding: 6em 2em 2em 2em;
   }
+}
+
+/* 🎯 Dia Text Reveal Mask Properties */
+.dia-text-reveal-span {
+  align-baseline: bottom;
+  vertical-align: bottom;
+  line-height: 100%;
+  color: transparent !important;
+  background-clip: text !important;
+  -webkit-background-clip: text !important;
+  background-size: 100% 100%;
+  will-change: width, background-image;
+  transition: width 0.38s cubic-bezier(0.4, 0, 0.2, 1);
 }
