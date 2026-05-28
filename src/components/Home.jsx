@@ -95,7 +95,7 @@ function Home() {
     'computer science.',
     'cybersecurity.',
     'ethical hacking.',
-    'technology.',
+    'new technology.',
     'building computers.',
     'learning new things.',
     'solving problems.',
@@ -123,7 +123,7 @@ function Home() {
     <>
       <StaggeredMenu
         isFixed
-        position="right"
+        position="left"
         items={menuItems}
         socialItems={[]}
         displaySocials={false}
@@ -131,8 +131,8 @@ function Home() {
         menuButtonColor="#fff"
         openMenuButtonColor="#fff"
         changeMenuColorOnOpen
-        colors={['rgba(255, 255, 255, 0.04)', 'rgba(255, 255, 255, 0.01)']}
-        accentColor="#fff"
+        colors={['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 0)']}
+        accentColor="#ffffff"
       />
 
       <div className="section-content-container" style={styles.mainContainer}>
@@ -161,7 +161,7 @@ function Home() {
 
               <div style={styles.subtitleRow}>
                 <span style={styles.staticPrefix} className="hero-static-prefix">
-                  I love
+                  I love learning
                 </span>
                 <DiaTextReveal
                   repeat

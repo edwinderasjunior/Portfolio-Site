@@ -52,18 +52,19 @@ function App() {
             }}
           >
             <Suspense fallback={<div />}>
+              {/* 🎯 Toggle your global background theme vibes here: */}
               <LazySilk
-                speed={2}
-                scale={0.7}
-                color="#1A365D"
+                speed={3}
+                scale={0.8}
+                color="#24355c" /* Premium Midnight Slate */
                 noiseIntensity={1.0}
-                rotation={0.4}
+                rotation={0.6}
               />
             </Suspense>
 
             <DotGrid
-              dotSize={4}
-              gap={24}
+              dotSize={3.5}
+              gap={20}
               baseColor="#ffffff"
               activeColor="#ffffff"
               proximity={120}
@@ -74,7 +75,7 @@ function App() {
               style={{
                 position: 'absolute',
                 inset: 0,
-                opacity: 0.15,
+                opacity: 0.10,
               }}
             />
           </div>
@@ -82,7 +83,6 @@ function App() {
           {/* Content Container Layer */}
           <div style={contentContainerStyle}>
             <BrowserRouter>
-              {/* 🎯 Updated to v5 Switch handling */}
               <Switch>
                 <Route path="/view-pdf" component={PdfViewerPage} />
                 <Route path="*" component={MainApp} />

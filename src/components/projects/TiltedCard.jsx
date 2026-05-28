@@ -75,12 +75,15 @@ export default function TiltedCard({
   }
 
   return (
-    <figure
+    <div
       ref={ref}
-      className="tilted-card-figure"
+      className="tilted-card-container-shell"
       style={{
         height: containerHeight,
         width: containerWidth,
+        /* 🎯 Fixed: Locks 3D transforms strictly inside this wrapper layer */
+        perspective: '1000px',
+        position: 'relative',
       }}
       onMouseMove={handleMouse}
       onMouseEnter={handleMouseEnter}
@@ -120,16 +123,17 @@ export default function TiltedCard({
       </motion.div>
 
       {showTooltip && (
-        <motion.figcaption
+        <motion.div
           className="tilted-card-caption"
           style={{
             opacity,
+            transform: `rotate(${rotateFigcaption.get()}deg)`,
           }}
         >
           {captionText}
-        </motion.figcaption>
+        </motion.div>
       )}
-    </figure>
+    </div>
   );
 }
 

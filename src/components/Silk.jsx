@@ -151,7 +151,7 @@ Silk.propTypes = {
 };
 
 Silk.defaultProps = {
-  speed: 2,
+  speed: 9,
   scale: 0.6,
   color: '#1A365D',
   noiseIntensity: 1.0,

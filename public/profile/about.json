@@ -1,5 +1,21 @@
 {
-    "about": " I am a Computer Science and Cybersecurity student at the University of Colorado Colorado Springs (UCCS). With a background in Computer Information Systems and experience in professional security, I view software engineering through a security-first lens. I focus on writing clean code, exploring defensive programming, and building resilient digital systems using languages like Python, C, Java, and Lua. \n\n\nOutside of class, I am an active programmer, gamer, and independent game developer. I love the challenge of breaking complex software down to see exactly how it ticks, whether I'm optimizing network storage, scripting virtual worlds, or setting up automated server pipelines. I am always eager to learn new technologies and bridge the gap between creative development and secure infrastructure.",
-    "imageSource": "images/about/profile.png"
-    
+  "about": "I am a Computer Science and Cybersecurity student at the University of Colorado Colorado Springs (UCCS). With a background in Computer Information Systems and experience in professional security, I view software engineering through a security-first lens. I focus on writing clean code, exploring defensive programming, and building resilient digital systems using languages like Python, C, Java, and Lua. \n\nOutside of class, I am an active programmer, gamer, and independent game developer. I love the challenge of breaking complex software down to see exactly how it ticks, whether I'm optimizing network storage, scripting virtual worlds, or setting up automated server pipelines. I am always eager to learn new technologies and bridge the gap between creative development and secure infrastructure.",
+  "imageSource": "images/about/profile.png",
+  "timeline": [
+    {
+      "title": "Computer Science at UCCS",
+      "description": "I am a Computer Science and Cybersecurity student at the University of Colorado Colorado Springs (UCCS). With a solid background in Computer Information Systems, I focus on writing clean, scalable code and building resilient digital systems. I enjoy diving into core technical problem solving and exploring software engineering using a robust multi-language stack including Python, C, Java, and Lua.",
+      "label": "Software Engineering"
+    },
+    {
+      "title": "Security-First Architecture",
+      "description": "With foundational experience in professional security operational roles, I view software development and systems engineering strictly through a security-first lens. I enjoy exploring defensive programming paradigms, implementing secure systems design, and ensuring data integrity across applications. I am always eager to bridge the gap between creative logic structures and hardened, secure infrastructure layers.",
+      "label": "Cybersecurity Focus"
+    },
+    {
+      "title": "Systems, Networking & Dev",
+      "description": "Outside of the classroom, I am an active programmer, gamer, and independent game developer. I love the technical challenge of breaking complex software down to see exactly how it ticks. Whether I am optimizing high-capacity local network storage arrays, scripting custom interactive virtual worlds, or building automated remote server pipelines, I thrive on continuous integration challenges.",
+      "label": "Infrastructure & Games"
+    }
+  ]
 }

@@ -1,0 +1,97 @@
+.sticky-scroll-wrapper {
+  position: relative;
+  display: flex;
+  height: 26rem !important;
+  overflow-y: scroll !important;
+  -webkit-overflow-scrolling: touch;
+  justify-content: center;
+  gap: 2.5rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
+  padding: 2.5rem;
+  width: 100%;
+  scrollbar-width: none;
+}
+
+.sticky-scroll-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.sticky-scroll-left {
+  position: relative;
+  display: flex;
+  align-items: start;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  width: 55%;
+}
+
+.sticky-scroll-text-container {
+  max-width: 42rem;
+  width: 100%;
+}
+
+.sticky-scroll-card-block {
+  margin-top: 2rem;
+  margin-bottom: 12rem;
+  text-align: left;
+}
+
+.sticky-scroll-card-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #f1f5f9;
+  margin-bottom: 0.75rem;
+}
+
+.sticky-scroll-card-desc {
+  font-size: 1.05rem;
+  color: #cbd5e1;
+  line-height: 1.6;
+}
+
+.sticky-scroll-spacer {
+  height: 4rem;
+}
+
+.sticky-scroll-right-wrapper {
+  width: 45%;
+  display: flex;
+  align-items: start;
+  justify-content: center;
+}
+
+.sticky-scroll-right-pane {
+  position: sticky;
+  top: 0rem;
+  height: 14rem;
+  width: 20rem;
+  overflow: hidden;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.sticky-pane-inner {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  color: #ffffff;
+  font-size: 1.2rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+@media (max-width: 992px) {
+  .sticky-scroll-right-wrapper {
+    display: none;
+  }
+  .sticky-scroll-left {
+    width: 100%;
+  }
+}

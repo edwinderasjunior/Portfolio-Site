@@ -300,8 +300,8 @@ DotGrid.propTypes = {
 DotGrid.defaultProps = {
   dotSize: 16,
   gap: 32,
-  baseColor: '#27a9ff',
-  activeColor: '#17d5f7',
+  baseColor: '#c0d3e034',
+  activeColor: '#13d855',
   proximity: 150,
   speedTrigger: 100,
   shockRadius: 250,
