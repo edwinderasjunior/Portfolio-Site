@@ -8,6 +8,7 @@ import { Mail } from 'lucide-react';
 import { FaLinkedin, FaGithub } from 'react-icons/fa';
 import GlassSurface from './GlassSurface';
 import { Dock, DockIcon } from './Dock';
+import { StaggeredMenu } from './StaggeredMenu';
 
 const styles = {
   mainContainer: {
@@ -18,7 +19,7 @@ const styles = {
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: '40px', // Increased gap for a more balanced layout with larger elements
+    gap: '40px',
   },
   heroTextContainer: {
     textAlign: 'center',
@@ -31,9 +32,10 @@ const styles = {
     height: '100%',
     borderRadius: '50%',
     color: '#ffffff',
-    transition: 'background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease',
+    transition: 'background-color 0.2s ease, '
+      + 'border-color 0.2s ease, '
+      + 'transform 0.2s ease',
   },
-  /* 1. UPGRADED ICON SIZE: Bumped from 20px to 26px to look crisp inside the larger bubbles */
   iconVector: {
     width: '26px',
     height: '26px',
@@ -41,6 +43,11 @@ const styles = {
 };
 
 function Home() {
+  /* 🎯 Fixed: Clean single-item destination pointer arrays */
+  const menuItems = [
+    { label: 'Contact', ariaLabel: 'Get in touch', link: '/contact' },
+  ];
+
   const socialData = [
     {
       id: 'linkedin',
@@ -64,6 +71,21 @@ function Home() {
 
   return (
     <>
+      {/* 🎯 Fixed: Toggled displaySocials off to strip out footer links seamlessly */}
+      <StaggeredMenu
+        isFixed
+        position="right"
+        items={menuItems}
+        socialItems={[]}
+        displaySocials={false}
+        displayItemNumbering
+        menuButtonColor="#fff"
+        openMenuButtonColor="#fff"
+        changeMenuColorOnOpen
+        colors={['rgba(255, 255, 255, 0.04)', 'rgba(255, 255, 255, 0.01)']}
+        accentColor="#fff"
+      />
+
       <div className="section-content-container" style={styles.mainContainer}>
         <Container fluid style={{ paddingLeft: 0, paddingRight: 0 }}>
           <Row className="align-items-center justify-content-center w-100 m-0">
@@ -81,7 +103,6 @@ function Home() {
             >
               <h1
                 style={{
-                  /* 2. UPGRADED TEXT SIZE: Increased from 3rem to 3.8rem */
                   fontSize: '3.8rem',
                   fontWeight: 700,
                   whiteSpace: 'nowrap',
@@ -107,7 +128,7 @@ function Home() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            gap: '20px', // Slightly wider spacing between larger bubbles
+            gap: '20px',
             overflow: 'visible',
             padding: 0,
           }}
@@ -117,7 +138,6 @@ function Home() {
 
             return (
               <div key={social.id} className="dock-tooltip-wrapper">
-                {/* 3. UPGRADED BUBBLE SIZE: Bumped from 48x48 (radius 24) to 60x60 (radius 30) */}
                 <GlassSurface
                   width={60}
                   height={60}
