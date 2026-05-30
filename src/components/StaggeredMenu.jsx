@@ -7,8 +7,40 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 import { gsap } from 'gsap';
-import menuData from '../constants/StaggeredMenu.json';
 import './StaggeredMenu.css';
+
+const MENU_ITEMS = [
+  {
+    label: 'Test',
+    ariaLabel: 'Go to homepage',
+    link: '/',
+  },
+  {
+    label: 'About',
+    ariaLabel: 'Learn about me',
+    link: '/about',
+  },
+  {
+    label: 'Skills',
+    ariaLabel: 'View my technical stack',
+    link: '/skills',
+  },
+  {
+    label: 'Education',
+    ariaLabel: 'See academic timeline',
+    link: '/education',
+  },
+  {
+    label: 'Experience',
+    ariaLabel: 'See professional history',
+    link: '/experience',
+  },
+  {
+    label: 'Projects',
+    ariaLabel: 'Browse development projects',
+    link: '/projects',
+  },
+];
 
 function StaggeredMenu({
   position,
@@ -47,7 +79,7 @@ function StaggeredMenu({
   const toggleBtnRef = useRef(null);
   const busyRef = useRef(false);
 
-  const items = menuData.menuItems || [];
+  const items = MENU_ITEMS;
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {

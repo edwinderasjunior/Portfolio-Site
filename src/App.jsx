@@ -89,7 +89,6 @@ function App() {
               </Switch>
             </BrowserRouter>
           </div>
-
         </div>
       </ThemeProvider>
     </AppContext.Provider>

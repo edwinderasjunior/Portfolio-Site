@@ -1,7 +1,7 @@
 {
   "menuItems": [
     {
-      "label": "Home",
+      "label": "Test",
       "ariaLabel": "Go to homepage",
       "link": "/"
     },

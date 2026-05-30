@@ -1,0 +1,120 @@
+/* Outermost layout positioning wrapper */
+.modern-player-wrapper {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 340px;
+  z-index: 999;
+  box-sizing: border-box;
+  will-change: transform;
+}
+
+/* 🎯 Overriding react-modern-audio-player's default container with custom glassmorphism */
+.modern-player-wrapper .rmap-player-provider {
+  background: rgba(255, 255, 255, 0.03) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.3) !important;
+  border-radius: 20px !important;
+  padding: 16px !important;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease !important;
+  
+  /* Overriding CSS Custom Variables for complete branding synchronization */
+  --rm-audio-player-text-color: #ffffff !important;
+  --rm-audio-player-interface-container: transparent !important;
+  
+  /* Custom white/slate track variables */
+  --rm-audio-player-track-current-time: #ffffff !important;
+  --rm-audio-player-track-duration: rgba(255, 255, 255, 0.4) !important;
+  --rm-audio-player-progress-bar: #ffffff !important;
+  --rm-audio-player-progress-bar-background: rgba(255, 255, 255, 0.12) !important;
+  --rm-audio-player-volume-background: rgba(255, 255, 255, 0.15) !important;
+  --rm-audio-player-volume-thumb: #ffffff !important;
+  --rm-audio-player-volume-fill: rgba(255, 255, 255, 0.6) !important;
+  --rm-audio-player-volume-track: rgba(255, 255, 255, 0.2) !important;
+  --rm-audio-player-volume-panel-background: rgba(20, 20, 22, 0.95) !important;
+  --rm-audio-player-volume-panel-border: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Custom hovered border glow feedback */
+.modern-player-wrapper:hover .rmap-player-provider {
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 12px 36px 0 rgba(0, 0, 0, 0.4) !important;
+}
+
+/* 🎯 Clean up internal grid padding and container backgrounds */
+.modern-player-wrapper .rmap-interface-grid {
+  padding: 0 !important;
+  background: transparent !important;
+}
+
+/* 🎯 Symmetrical Column Alignments to completely prevent overflows */
+.modern-player-wrapper [style*="grid-area: row1-1"] {
+  justify-self: start !important;
+}
+
+/* Left-align current track details to the artwork */
+.modern-player-wrapper [style*="grid-area: row1-2"] {
+  justify-self: start !important;
+  width: 100%;
+}
+
+.modern-player-wrapper .rmap-track-info-container {
+  text-align: left;
+  justify-content: center !important;
+}
+
+/* Center play/pause & track controls precisely */
+.modern-player-wrapper [style*="grid-area: row1-3"] {
+  justify-self: center !important;
+}
+
+/* Right-align volume trigger button */
+.modern-player-wrapper [style*="grid-area: row1-4"] {
+  justify-self: end !important;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Symmetrical alignment for bottom time indicators under artwork & volume */
+.modern-player-wrapper [style*="grid-area: row3-1"] {
+  justify-self: start !important;
+}
+
+.modern-player-wrapper [style*="grid-area: row3-4"] {
+  justify-self: end !important;
+}
+
+/* 🎯 Compact modern styling for time stamps */
+.modern-player-wrapper .rmap-track-time-container {
+  font-size: 11px !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.02em !important;
+  opacity: 0.65 !important;
+  font-family: 'Inter', sans-serif !important;
+}
+
+/* 🎯 Spacing and layout refinements for progress bar row */
+.modern-player-wrapper .rmap-progress-container {
+  margin: 12px 0 4px 0 !important;
+}
+
+.modern-player-wrapper .rmap-bar-progress-wrapper {
+  padding: 4px 0 !important;
+  height: 12px !important;
+}
+
+/* Premium rounded artwork frame with smooth drop-shadow */
+.modern-player-wrapper .rmap-artwork-container img,
+.modern-player-wrapper .rmap-artwork-container .rmap-artwork-fallback {
+  border-radius: 8px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25) !important;
+  width: 44px !important;
+  height: 44px !important;
+}
+
+/* Volume Panel positioning adjustments */
+.modern-player-wrapper .rmap-volume-container .rmap-volume-panel {
+  bottom: 30px !important;
+}
