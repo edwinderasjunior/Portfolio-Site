@@ -18,7 +18,7 @@ const playList = [
     name: 'Araw Gabi',
     writer: 'Edwin Deras Jr.',
     src: '/Araw_Gabi.mp3',
-    img: '/images/logo.png',
+    img: '/images/logo.webp',
   },
 ];
 

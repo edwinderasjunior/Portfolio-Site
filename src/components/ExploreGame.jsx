@@ -557,7 +557,7 @@ function ExploreGame() {
         <div style={styles.heroCard}>
           {!heroImgErr ? (
             <img
-              src="images/projects/antigravity-hero.png"
+              src="images/projects/antigravity-hero.webp"
               alt="Antigravity 2.0 Hero"
               style={styles.showcaseImage}
               onError={() => setHeroImgErr(true)}
@@ -581,7 +581,7 @@ function ExploreGame() {
         <div style={styles.standaloneCard}>
           {!hubImgErr ? (
             <img
-              src="images/projects/standalone-hub.png"
+              src="images/projects/standalone-hub.webp"
               alt="Standalone Hub"
               style={styles.standaloneImage}
               onError={() => setHubImgErr(true)}
@@ -619,7 +619,7 @@ function ExploreGame() {
           <div style={styles.featureColCard}>
             {!orchImgErr ? (
               <img
-                src="images/projects/manage-orchestrate.png"
+                src="images/projects/manage-orchestrate.webp"
                 alt="Manage & Orchestrate"
                 style={styles.standaloneImage}
                 onError={() => setOrchImgErr(true)}
@@ -645,7 +645,7 @@ function ExploreGame() {
           <div style={styles.featureColCard}>
             {!subImgErr ? (
               <img
-                src="images/projects/dynamic-subagents.png"
+                src="images/projects/dynamic-subagents.webp"
                 alt="Dynamic Subagents"
                 style={styles.standaloneImage}
                 onError={() => setSubImgErr(true)}
@@ -680,7 +680,7 @@ function ExploreGame() {
           <div style={styles.featureColCard}>
             {!artImgErr ? (
               <img
-                src="images/projects/artifacts.png"
+                src="images/projects/artifacts.webp"
                 alt="Artifacts"
                 style={styles.standaloneImage}
                 onError={() => setArtImgErr(true)}
@@ -707,7 +707,7 @@ function ExploreGame() {
           <div style={styles.featureColCard}>
             {!cronImgErr ? (
               <img
-                src="images/projects/cron-customization.png"
+                src="images/projects/cron-customization.webp"
                 alt="Cron & Customization"
                 style={styles.standaloneImage}
                 onError={() => setCronImgErr(true)}

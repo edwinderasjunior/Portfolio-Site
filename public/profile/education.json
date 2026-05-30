@@ -6,7 +6,7 @@
             "cardSubtitle":"Computer Information Systems - Associate's Degree",
             "cardDetailedText": "3.78 GPA, Phi Theta Kappa Honor Society, Dean's List",
             "icon" : {
-                "src": "images/education/download.png"
+                "src": "images/education/download.webp"
             }
         },
         {
@@ -15,7 +15,7 @@
             "cardSubtitle":"Computer Science / Cybersecurity - Bachelor's Degree",
             "cardDetailedText": "",
             "icon" : {
-                "src": "images/education/lorem-ipsum.png"
+                "src": "images/education/lorem-ipsum.webp"
             }
         }
     ]

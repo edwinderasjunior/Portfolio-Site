@@ -6,19 +6,19 @@
             "items" : [
      
                 {
-                    "icon": "images/skills/java.png",
+                    "icon": "images/skills/java.webp",
                     "title": "Java"
                 },
                 {
-                    "icon": "images/skills/js.png",
+                    "icon": "images/skills/js.webp",
                     "title": "JavaScript"
                 },
                 {
-                    "icon": "images/skills/python.png",
+                    "icon": "images/skills/python.webp",
                     "title": "Python"
                 },
                 {
-                    "icon": "images/skills/mysql.png",
+                    "icon": "images/skills/mysql.webp",
                     "title": "MySQL"
                 },
                 {
@@ -30,15 +30,15 @@
             "title": "Frameworks & Technologies",
             "items" : [
                 {
-                    "icon": "images/skills/android_new.png",
+                    "icon": "images/skills/android_new.webp",
                     "title": "Android"
                 },
                 {
-                    "icon": "images/skills/react.png",
+                    "icon": "images/skills/react.webp",
                     "title": "React"
                 },
                 {
-                    "icon": "images/skills/nodejs.png",
+                    "icon": "images/skills/nodejs.webp",
                     "title": "Nodejs"
                 }
             ]
@@ -47,15 +47,15 @@
             "title" : "Tools & Platforms",
             "items": [
                 {
-                    "icon": "images/skills/android-studio.png",
+                    "icon": "images/skills/android-studio.webp",
                     "title": "Android Studio"
                 },
                 {
-                    "icon": "images/skills/git.png",
+                    "icon": "images/skills/git.webp",
                     "title": "Git"
                 },
                 {
-                    "icon": "images/skills/docker.png",
+                    "icon": "images/skills/docker.webp",
                     "title": "Docker"
                 }
             ]
