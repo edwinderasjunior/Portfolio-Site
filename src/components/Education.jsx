@@ -7,7 +7,6 @@ import { ThemeContext } from 'styled-components';
 import endpoints from '../constants/endpoints';
 import Header from './Header';
 import FallbackSpinner from './FallbackSpinner';
-import StaggeredMenu from './StaggeredMenu';
 import '../css/education.css';
 
 function getLayoutConfig(windowWidth) {
@@ -26,7 +25,6 @@ function getLayoutConfig(windowWidth) {
 function Education({ header }) {
   const theme = useContext(ThemeContext);
   const [educationData, setEducationData] = useState(null);
-  const [homeData, setHomeData] = useState(null);
   const [layoutConfig, setLayoutConfig] = useState(
     getLayoutConfig(window?.innerWidth ?? 1024),
   );
@@ -38,38 +36,15 @@ function Education({ header }) {
       .then((res) => setEducationData(res))
       .catch((err) => err);
 
-    // 2. Fetch global navigation menu endpoints
-    fetch(endpoints.home, { method: 'GET' })
-      .then((res) => res.json())
-      .then((res) => setHomeData(res))
-      .catch((err) => err);
-
     setLayoutConfig(getLayoutConfig(window?.innerWidth ?? 1024));
   }, []);
 
-  if (!educationData || !homeData) {
+  if (!educationData) {
     return <FallbackSpinner />;
   }
 
-  const menuItems = homeData.menuItems || [];
-
   return (
     <>
-      {/* 🎯 Draw the global menu anchor at the absolute peak of the tree */}
-      <StaggeredMenu
-        isFixed
-        position="left"
-        items={menuItems}
-        socialItems={[]}
-        displaySocials={false}
-        displayItemNumbering
-        menuButtonColor="#fff"
-        openMenuButtonColor="#fff"
-        changeMenuColorOnOpen
-        colors={['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 0)']}
-        accentColor="#ffffff"
-      />
-
       <Header title={header} />
       <Fade>
         <div style={{ width: layoutConfig.width }} className="section-content-container">

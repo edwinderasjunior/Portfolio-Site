@@ -6,7 +6,6 @@ import Header from './Header';
 import endpoints from '../constants/endpoints';
 import ProjectCard from './projects/ProjectCard';
 import FallbackSpinner from './FallbackSpinner';
-import StaggeredMenu from './StaggeredMenu';
 
 const styles = {
   containerStyle: {
@@ -30,7 +29,6 @@ const styles = {
 const Projects = (props) => {
   const { header } = props;
   const [projectData, setProjectData] = useState(null);
-  const [homeData, setHomeData] = useState(null);
   const [showMore, setShowMore] = useState(false);
 
   useEffect(() => {
@@ -41,21 +39,11 @@ const Projects = (props) => {
       .then((res) => res.json())
       .then((res) => setProjectData(res))
       .catch((err) => err);
-
-    // 2. Fetch landing configurations to supply the global side navigation
-    fetch(endpoints.home, {
-      method: 'GET',
-    })
-      .then((res) => res.json())
-      .then((res) => setHomeData(res))
-      .catch((err) => err);
   }, []);
 
-  if (!projectData || !homeData) {
+  if (!projectData) {
     return <FallbackSpinner />;
   }
-
-  const menuItems = homeData.menuItems || [];
 
   /* 🎯 Cleaned lines 59, 61, and 62 below of any invisible spaces */
   const itemsLimit = showMore && projectData.projects
@@ -64,21 +52,6 @@ const Projects = (props) => {
 
   return (
     <>
-      {/* 🎯 Anchor the fixed slide menu drawer on top of the root template shell */}
-      <StaggeredMenu
-        isFixed
-        position="left"
-        items={menuItems}
-        socialItems={[]}
-        displaySocials={false}
-        displayItemNumbering
-        menuButtonColor="#fff"
-        openMenuButtonColor="#fff"
-        changeMenuColorOnOpen
-        colors={['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 0)']}
-        accentColor="#ffffff"
-      />
-
       <Header title={header} />
 
       {/* 🎯 Cleaned line 83 below of trailing whitespace */}

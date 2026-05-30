@@ -8,7 +8,6 @@ import Fade from 'react-reveal';
 import Header from './Header';
 import endpoints from '../constants/endpoints';
 import FallbackSpinner from './FallbackSpinner';
-import StaggeredMenu from './StaggeredMenu';
 import '../css/experience.css';
 
 const styles = {
@@ -35,7 +34,6 @@ function Experience(props) {
   const theme = useContext(ThemeContext);
   const { header } = props;
   const [experienceData, setExperienceData] = useState(null);
-  const [homeData, setHomeData] = useState(null);
 
   useEffect(() => {
     // 1. Fetch live professional experience history records
@@ -45,39 +43,14 @@ function Experience(props) {
       .then((res) => res.json())
       .then((res) => setExperienceData(res.experiences))
       .catch((err) => err);
-
-    // 2. Fetch shared landing assets to populate the side navigation elements
-    fetch(endpoints.home, {
-      method: 'GET',
-    })
-      .then((res) => res.json())
-      .then((res) => setHomeData(res))
-      .catch((err) => err);
   }, []);
 
-  if (!experienceData || !homeData) {
+  if (!experienceData) {
     return <FallbackSpinner />;
   }
 
-  const menuItems = homeData.menuItems || [];
-
   return (
     <>
-      {/* 🎯 Anchors the side navigation drawer at the absolute top of the page */}
-      <StaggeredMenu
-        isFixed
-        position="left"
-        items={menuItems}
-        socialItems={[]}
-        displaySocials={false}
-        displayItemNumbering
-        menuButtonColor="#fff"
-        openMenuButtonColor="#fff"
-        changeMenuColorOnOpen
-        colors={['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 0)']}
-        accentColor="#ffffff"
-      />
-
       <Header title={header} />
 
       <div className="section-content-container">

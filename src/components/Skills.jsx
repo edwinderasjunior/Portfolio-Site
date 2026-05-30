@@ -7,7 +7,6 @@ import Header from './Header';
 import endpoints from '../constants/endpoints';
 import FallbackSpinner from './FallbackSpinner';
 import { LogoLoop } from './LogoLoop';
-import StaggeredMenu from './StaggeredMenu';
 
 const styles = {
   introTextContainer: {
@@ -45,7 +44,6 @@ const styles = {
 function Skills(props) {
   const { header } = props;
   const [skillsData, setSkillsData] = useState(null);
-  const [homeData, setHomeData] = useState(null);
 
   const renderSkillsIntro = (intro) => (
     <h4 style={styles.introTextContainer}>
@@ -61,39 +59,14 @@ function Skills(props) {
       .then((res) => res.json())
       .then((res) => setSkillsData(res))
       .catch((err) => err);
-
-    // 2. Fetch shared home layout configuration to populate the menu
-    fetch(endpoints.home, {
-      method: 'GET',
-    })
-      .then((res) => res.json())
-      .then((res) => setHomeData(res))
-      .catch((err) => err);
   }, []);
 
-  if (!skillsData || !homeData) {
+  if (!skillsData) {
     return <FallbackSpinner />;
   }
 
-  const menuItems = homeData.menuItems || [];
-
   return (
     <>
-      {/* 🎯 Draw the unified navigation panel right at the head of the file layout */}
-      <StaggeredMenu
-        isFixed
-        position="left"
-        items={menuItems}
-        socialItems={[]}
-        displaySocials={false}
-        displayItemNumbering
-        menuButtonColor="#fff"
-        openMenuButtonColor="#fff"
-        changeMenuColorOnOpen
-        colors={['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 0)']}
-        accentColor="#ffffff"
-      />
-
       <Header title={header} />
       <Fade>
         <div

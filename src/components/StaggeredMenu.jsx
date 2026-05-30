@@ -8,7 +8,49 @@ import React, {
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
+import AudioPlayer from 'react-modern-audio-player';
 import './StaggeredMenu.css';
+import './ModernAudioPlayer.css';
+
+const playList = [
+  {
+    id: 1,
+    name: 'Araw Gabi',
+    writer: 'Edwin Deras Jr.',
+    src: '/Araw_Gabi.mp3',
+    img: '/images/logo.png',
+  },
+];
+
+const AUDIO_INITIAL_STATE = {
+  isPlaying: false,
+  volume: 0.4,
+};
+
+const AUDIO_ACTIVE_UI = {
+  all: true,
+  playList: false,
+  playbackRate: false,
+  repeatType: false,
+  artwork: false,
+};
+
+const AUDIO_PLACEMENT = {
+  player: 'bottom-right',
+  interface: {
+    templateArea: {
+      trackInfo: 'row1-1',
+      playButton: 'row1-2',
+      volume: 'row1-3',
+      progress: 'row2-1',
+      trackTimeCurrent: 'row3-1',
+      trackTimeDuration: 'row3-3',
+      repeatType: 'row1-2',
+      playList: 'row1-2',
+      playbackRate: 'row1-2',
+    },
+  },
+};
 
 const MENU_ITEMS = [
   {
@@ -561,10 +603,26 @@ function StaggeredMenu({
           )}
 
           <div
+            className="sm-player-drawer-container"
+            style={{
+              width: '100%',
+              marginTop: 'auto',
+            }}
+          >
+            <AudioPlayer
+              playList={playList}
+              audioInitialState={AUDIO_INITIAL_STATE}
+              activeUI={AUDIO_ACTIVE_UI}
+              placement={AUDIO_PLACEMENT}
+              colorScheme="dark"
+            />
+          </div>
+
+          <div
             className="sm-panel-footer-credit"
             style={{
-              marginTop: 'auto',
-              paddingTop: '2rem',
+              marginTop: '1.5rem',
+              paddingTop: '0',
               fontSize: '0.85rem',
               fontFamily: 'monospace',
               letterSpacing: '0.5px',

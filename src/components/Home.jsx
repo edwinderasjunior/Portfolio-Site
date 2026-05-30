@@ -6,7 +6,6 @@ import endpoints from '../constants/endpoints';
 import FallbackSpinner from './FallbackSpinner';
 import GlassSurface from './GlassSurface';
 import { Dock, DockIcon } from './Dock';
-import StaggeredMenu from './StaggeredMenu';
 import { DiaTextReveal } from './DiaTextReveal';
 
 const styles = {
@@ -86,7 +85,6 @@ function Home() {
     return <FallbackSpinner />;
   }
 
-  const menuItems = data.menuItems || [];
   const revealPhrases = data.phrases || [];
   const socialData = data.socials || [];
 
@@ -94,20 +92,6 @@ function Home() {
 
   return (
     <>
-      <StaggeredMenu
-        isFixed
-        position="left"
-        items={menuItems}
-        socialItems={[]}
-        displaySocials={false}
-        displayItemNumbering
-        menuButtonColor="#fff"
-        openMenuButtonColor="#fff"
-        changeMenuColorOnOpen
-        colors={['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 0)']}
-        accentColor="#ffffff"
-      />
-
       <div className="section-content-container" style={styles.mainContainer}>
         <Container fluid style={{ paddingLeft: 0, paddingRight: 0 }}>
           <Row className="align-items-center justify-content-center w-100 m-0">
