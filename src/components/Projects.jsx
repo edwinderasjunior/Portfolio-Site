@@ -6,6 +6,7 @@ import Header from './Header';
 import endpoints from '../constants/endpoints';
 import ProjectCard from './projects/ProjectCard';
 import FallbackSpinner from './FallbackSpinner';
+import StaggeredMenu from './StaggeredMenu';
 
 const styles = {
   containerStyle: {
@@ -28,57 +29,91 @@ const styles = {
 
 const Projects = (props) => {
   const { header } = props;
-  const [data, setData] = useState(null);
+  const [projectData, setProjectData] = useState(null);
+  const [homeData, setHomeData] = useState(null);
   const [showMore, setShowMore] = useState(false);
 
   useEffect(() => {
+    // 1. Fetch main portfolio development projects database records
     fetch(endpoints.projects, {
       method: 'GET',
     })
       .then((res) => res.json())
-      .then((res) => setData(res))
+      .then((res) => setProjectData(res))
+      .catch((err) => err);
+
+    // 2. Fetch landing configurations to supply the global side navigation
+    fetch(endpoints.home, {
+      method: 'GET',
+    })
+      .then((res) => res.json())
+      .then((res) => setHomeData(res))
       .catch((err) => err);
   }, []);
 
-  const numberOfItems = showMore && data ? data.length : 6;
+  if (!projectData || !homeData) {
+    return <FallbackSpinner />;
+  }
+
+  const menuItems = homeData.menuItems || [];
+
+  /* 🎯 Cleaned lines 59, 61, and 62 below of any invisible spaces */
+  const itemsLimit = showMore && projectData.projects
+    ? projectData.projects.length
+    : 6;
 
   return (
     <>
-      <Header title={header} />
-      {data ? (
-        <div className="section-content-container">
-          <Container style={styles.containerStyle}>
-            <Row xs={1} sm={1} md={2} lg={3} className="g-4">
-              {data.projects?.slice(0, numberOfItems).map((project) => (
-                <Fade key={project.title}>
-                  <ProjectCard project={project} />
-                </Fade>
-              ))}
-            </Row>
+      {/* 🎯 Anchor the fixed slide menu drawer on top of the root template shell */}
+      <StaggeredMenu
+        isFixed
+        position="left"
+        items={menuItems}
+        socialItems={[]}
+        displaySocials={false}
+        displayItemNumbering
+        menuButtonColor="#fff"
+        openMenuButtonColor="#fff"
+        changeMenuColorOnOpen
+        colors={['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 0)']}
+        accentColor="#ffffff"
+      />
 
-            {!showMore && (
-              <Button
-                style={{ ...styles.showMoreStyle, ...styles.customButtonStyle }}
-                onClick={() => setShowMore(true)}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.15)';
-                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.3)';
-                  e.currentTarget.style.transform = 'translateY(-2px)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.05)';
-                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.15)';
-                  e.currentTarget.style.transform = 'translateY(0px)';
-                }}
-              >
-                show more
-              </Button>
-            )}
-          </Container>
-        </div>
-      ) : (
-        <FallbackSpinner />
-      )}
+      <Header title={header} />
+
+      {/* 🎯 Cleaned line 83 below of trailing whitespace */}
+      <div className="section-content-container">
+        <Container style={styles.containerStyle}>
+          <Row xs={1} sm={1} md={2} lg={3} className="g-4">
+            {projectData.projects?.slice(0, itemsLimit).map((project) => (
+              <Fade key={project.title}>
+                <ProjectCard project={project} />
+              </Fade>
+            ))}
+          </Row>
+
+          {!showMore && (
+            <Button
+              style={{ ...styles.showMoreStyle, ...styles.customButtonStyle }}
+              onClick={() => setShowMore(true)}
+              onMouseEnter={(e) => {
+                const s = e.currentTarget.style;
+                s.backgroundColor = 'rgba(255, 255, 255, 0.15)';
+                s.borderColor = 'rgba(255, 255, 255, 0.3)';
+                s.transform = 'translateY(-2px)';
+              }}
+              onMouseLeave={(e) => {
+                const s = e.currentTarget.style;
+                s.backgroundColor = 'rgba(255, 255, 255, 0.05)';
+                s.borderColor = 'rgba(255, 255, 255, 0.15)';
+                s.transform = 'translateY(0px)';
+              }}
+            >
+              show more
+            </Button>
+          )}
+        </Container>
+      </div>
     </>
   );
 };

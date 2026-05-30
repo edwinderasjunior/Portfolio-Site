@@ -6,7 +6,7 @@ import endpoints from '../constants/endpoints';
 import FallbackSpinner from './FallbackSpinner';
 import GlassSurface from './GlassSurface';
 import { Dock, DockIcon } from './Dock';
-import { StaggeredMenu } from './StaggeredMenu';
+import StaggeredMenu from './StaggeredMenu';
 import { DiaTextReveal } from './DiaTextReveal';
 
 const styles = {

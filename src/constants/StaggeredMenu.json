@@ -1,0 +1,34 @@
+{
+  "menuItems": [
+    {
+      "label": "Home",
+      "ariaLabel": "Go to homepage",
+      "link": "/"
+    },
+    {
+      "label": "About",
+      "ariaLabel": "Learn about me",
+      "link": "/about"
+    },
+    {
+      "label": "Skills",
+      "ariaLabel": "View my technical stack",
+      "link": "/skills"
+    },
+    {
+      "label": "Education",
+      "ariaLabel": "See academic timeline",
+      "link": "/education"
+    },
+    {
+      "label": "Experience",
+      "ariaLabel": "See professional history",
+      "link": "/experience"
+    },
+    {
+      "label": "Projects",
+      "ariaLabel": "Browse development projects",
+      "link": "/projects"
+    }
+  ]
+}

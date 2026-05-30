@@ -6,6 +6,7 @@ import Header from './Header';
 import endpoints from '../constants/endpoints';
 import FallbackSpinner from './FallbackSpinner';
 import StickyScroll from './StickyScrollReveal';
+import StaggeredMenu from './StaggeredMenu';
 
 const styles = {
   layoutSpacerBumper: {
@@ -24,19 +25,33 @@ const styles = {
 
 function About(props) {
   const { header } = props;
-  const [data, setData] = useState(null);
+  const [aboutData, setAboutData] = useState(null);
+  const [homeData, setHomeData] = useState(null);
 
   useEffect(() => {
+    // 1. Fetch about layout fields
     fetch(endpoints.about, {
       method: 'GET',
     })
       .then((res) => res.json())
-      .then((res) => setData(res))
+      .then((res) => setAboutData(res))
+      .catch((err) => err);
+
+    // 2. Fetch shared home navigation assets for the menu items
+    fetch(endpoints.home, {
+      method: 'GET',
+    })
+      .then((res) => res.json())
+      .then((res) => setHomeData(res))
       .catch((err) => err);
   }, []);
 
-  /* 🎯 Simply pull the full timeline array right from your updated JSON database */
-  const rawTimeline = data && data.timeline ? [...data.timeline] : [];
+  if (!aboutData || !homeData) {
+    return <FallbackSpinner />;
+  }
+
+  const menuItems = homeData.menuItems || [];
+  const rawTimeline = aboutData.timeline ? [...aboutData.timeline] : [];
 
   const scrollContent = rawTimeline.map((item) => ({
     title: item.title,
@@ -56,21 +71,34 @@ function About(props) {
   }));
 
   return (
-    <div className="section-content-container" id="about">
-      <Header title={header} />
-      <div style={styles.layoutSpacerBumper} className="global-layout-header-bumper" />
-      <Container fluid style={{ padding: 0 }}>
-        {data ? (
+    <>
+      {/* 🎯 The menu renders right at the top of the About container */}
+      <StaggeredMenu
+        isFixed
+        position="left"
+        items={menuItems}
+        socialItems={[]}
+        displaySocials={false}
+        displayItemNumbering
+        menuButtonColor="#fff"
+        openMenuButtonColor="#fff"
+        changeMenuColorOnOpen
+        colors={['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 0)']}
+        accentColor="#ffffff"
+      />
+
+      <div className="section-content-container" id="about">
+        <Header title={header} />
+        <div style={styles.layoutSpacerBumper} className="global-layout-header-bumper" />
+        <Container fluid style={{ padding: 0 }}>
           <Fade>
             <div style={styles.scrollWrapperContainer}>
               <StickyScroll content={scrollContent} />
             </div>
           </Fade>
-        ) : (
-          <FallbackSpinner />
-        )}
-      </Container>
-    </div>
+        </Container>
+      </div>
+    </>
   );
 }
 

@@ -7,6 +7,7 @@ import { ThemeContext } from 'styled-components';
 import endpoints from '../constants/endpoints';
 import Header from './Header';
 import FallbackSpinner from './FallbackSpinner';
+import StaggeredMenu from './StaggeredMenu';
 import '../css/education.css';
 
 function getLayoutConfig(windowWidth) {
@@ -24,60 +25,86 @@ function getLayoutConfig(windowWidth) {
 
 function Education({ header }) {
   const theme = useContext(ThemeContext);
-  const [data, setData] = useState(null);
+  const [educationData, setEducationData] = useState(null);
+  const [homeData, setHomeData] = useState(null);
   const [layoutConfig, setLayoutConfig] = useState(
     getLayoutConfig(window?.innerWidth ?? 1024),
   );
 
   useEffect(() => {
+    // 1. Fetch education path entries
     fetch(endpoints.education, { method: 'GET' })
       .then((res) => res.json())
-      .then((res) => setData(res))
+      .then((res) => setEducationData(res))
+      .catch((err) => err);
+
+    // 2. Fetch global navigation menu endpoints
+    fetch(endpoints.home, { method: 'GET' })
+      .then((res) => res.json())
+      .then((res) => setHomeData(res))
       .catch((err) => err);
 
     setLayoutConfig(getLayoutConfig(window?.innerWidth ?? 1024));
   }, []);
 
+  if (!educationData || !homeData) {
+    return <FallbackSpinner />;
+  }
+
+  const menuItems = homeData.menuItems || [];
+
   return (
     <>
+      {/* 🎯 Draw the global menu anchor at the absolute peak of the tree */}
+      <StaggeredMenu
+        isFixed
+        position="left"
+        items={menuItems}
+        socialItems={[]}
+        displaySocials={false}
+        displayItemNumbering
+        menuButtonColor="#fff"
+        openMenuButtonColor="#fff"
+        changeMenuColorOnOpen
+        colors={['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 0)']}
+        accentColor="#ffffff"
+      />
+
       <Header title={header} />
-      {data ? (
-        <Fade>
-          <div style={{ width: layoutConfig.width }} className="section-content-container">
-            <Container>
-              <Chrono
-                hideControls
-                allowDynamicUpdate
-                useReadMore={false}
-                items={data.education}
-                cardHeight={250}
-                mode={layoutConfig.mode}
-                theme={{
-                  primary: theme.accentColor,
-                  secondary: theme.accentColor,
-                  cardBgColor: theme.chronoTheme.cardBgColor,
-                  cardForeColor: theme.chronoTheme.cardForeColor,
-                  titleColor: theme.chronoTheme.titleColor,
-                }}
-              >
-                <div className="chrono-icons">
-                  {data.education.map((education) => (
-                    education.icon ? (
-                      <img
-                        key={education.icon.src}
-                        src={education.icon.src}
-                        alt={education.icon.alt}
-                      />
-                    ) : null
-                  ))}
-                </div>
-              </Chrono>
-            </Container>
-          </div>
-        </Fade>
-      ) : (
-        <FallbackSpinner />
-      )}
+      <Fade>
+        <div style={{ width: layoutConfig.width }} className="section-content-container">
+          <Container>
+            <Chrono
+              hideControls
+              allowDynamicUpdate
+              useReadMore={false}
+              items={educationData.education}
+              cardHeight={250}
+              mode={layoutConfig.mode}
+              theme={{
+                primary: theme.accentColor,
+                secondary: theme.accentColor,
+                cardBgColor: theme.chronoTheme.cardBgColor,
+                cardForeColor: theme.chronoTheme.cardForeColor,
+                titleColor: theme.chronoTheme.titleColor,
+              }}
+            >
+              <div className="chrono-icons">
+                {/* 🎯 Linter-Fix: Renamed block parameter to 'edu' to maintain clean scopes */}
+                {educationData.education.map((edu) => (
+                  edu.icon ? (
+                    <img
+                      key={edu.icon.src}
+                      src={edu.icon.src}
+                      alt={edu.icon.alt}
+                    />
+                  ) : null
+                ))}
+              </div>
+            </Chrono>
+          </Container>
+        </div>
+      </Fade>
     </>
   );
 }

@@ -3,29 +3,30 @@ import React, {
   useLayoutEffect,
   useRef,
   useState,
+  useEffect,
 } from 'react';
 import PropTypes from 'prop-types';
 import { gsap } from 'gsap';
+import menuData from '../constants/StaggeredMenu.json';
 import './StaggeredMenu.css';
 
-export const StaggeredMenu = ({
-  position = 'right',
-  colors = ['rgba(255, 255, 255, 0.05)', 'rgba(255, 255, 255, 0.02)'],
-  items = [],
-  socialItems = [],
-  displaySocials = true,
-  displayItemNumbering = true,
-  className = '',
-  logoUrl = '',
-  menuButtonColor = '#fff',
-  openMenuButtonColor = '#fff',
-  accentColor = 'rgba(255, 255, 255, 0.5)',
-  changeMenuColorOnOpen = true,
-  isFixed = false,
-  closeOnClickAway = true,
-  onMenuOpen = undefined,
-  onMenuClose = undefined,
-}) => {
+function StaggeredMenu({
+  position,
+  colors,
+  socialItems,
+  displaySocials,
+  displayItemNumbering,
+  className,
+  logoUrl,
+  menuButtonColor,
+  openMenuButtonColor,
+  accentColor,
+  changeMenuColorOnOpen,
+  isFixed,
+  closeOnClickAway,
+  onMenuOpen,
+  onMenuClose,
+}) {
   const [open, setOpen] = useState(false);
   const openRef = useRef(false);
   const panelRef = useRef(null);
@@ -45,6 +46,8 @@ export const StaggeredMenu = ({
   const colorTweenRef = useRef(null);
   const toggleBtnRef = useRef(null);
   const busyRef = useRef(false);
+
+  const items = menuData.menuItems || [];
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
@@ -94,6 +97,7 @@ export const StaggeredMenu = ({
     const numberEls = Array.from(panel.querySelectorAll(listSelector));
     const socialTitle = panel.querySelector('.sm-socials-title');
     const socialLinks = Array.from(panel.querySelectorAll('.sm-socials-link'));
+    const footerCredit = panel.querySelector('.sm-panel-footer-credit');
 
     const offscreen = position === 'left' ? -100 : 100;
     const layerStates = layers.map((el) => ({ el, start: offscreen }));
@@ -103,6 +107,7 @@ export const StaggeredMenu = ({
     if (numberEls.length) gsap.set(numberEls, { '--sm-num-opacity': 0 });
     if (socialTitle) gsap.set(socialTitle, { opacity: 0 });
     if (socialLinks.length) gsap.set(socialLinks, { y: 25, opacity: 0 });
+    if (footerCredit) gsap.set(footerCredit, { opacity: 0, y: 15 });
 
     const tl = gsap.timeline({ paused: true });
 
@@ -110,7 +115,11 @@ export const StaggeredMenu = ({
       tl.fromTo(
         ls.el,
         { xPercent: ls.start },
-        { xPercent: 0, duration: 0.5, ease: 'power4.out' },
+        {
+          xPercent: 0,
+          duration: 0.5,
+          ease: 'power4.out',
+        },
         i * 0.07,
       );
     });
@@ -122,7 +131,11 @@ export const StaggeredMenu = ({
     tl.fromTo(
       panel,
       { xPercent: panelStart },
-      { xPercent: 0, duration: panelDuration, ease: 'power4.out' },
+      {
+        xPercent: 0,
+        duration: panelDuration,
+        ease: 'power4.out',
+      },
       panelInsertTime,
     );
 
@@ -154,10 +167,18 @@ export const StaggeredMenu = ({
       }
     }
 
+    const socialsStart = panelInsertTime + panelDuration * 0.4;
     if (socialTitle || socialLinks.length) {
-      const socialsStart = panelInsertTime + panelDuration * 0.4;
       if (socialTitle) {
-        tl.to(socialTitle, { opacity: 1, duration: 0.5, ease: 'power2.out' }, socialsStart);
+        tl.to(
+          socialTitle,
+          {
+            opacity: 1,
+            duration: 0.5,
+            ease: 'power2.out',
+          },
+          socialsStart,
+        );
       }
       if (socialLinks.length) {
         tl.to(
@@ -175,6 +196,20 @@ export const StaggeredMenu = ({
           socialsStart + 0.04,
         );
       }
+    }
+
+    if (footerCredit) {
+      /* 🎯 Fixed Line 188: Expanded to multiple lines to satisfy object-curly-newline */
+      tl.to(
+        footerCredit,
+        {
+          opacity: 0.4,
+          y: 0,
+          duration: 0.6,
+          ease: 'power2.out',
+        },
+        socialsStart + 0.15,
+      );
     }
 
     openTlRef.current = tl;
@@ -222,8 +257,10 @@ export const StaggeredMenu = ({
 
         const socialTitle = panel.querySelector('.sm-socials-title');
         const socialLinks = Array.from(panel.querySelectorAll('.sm-socials-link'));
+        const footerCredit = panel.querySelector('.sm-panel-footer-credit');
         if (socialTitle) gsap.set(socialTitle, { opacity: 0 });
         if (socialLinks.length) gsap.set(socialLinks, { y: 25, opacity: 0 });
+        if (footerCredit) gsap.set(footerCredit, { opacity: 0, y: 15 });
         busyRef.current = false;
       },
     });
@@ -267,17 +304,25 @@ export const StaggeredMenu = ({
         gsap.set(btn, { color: menuButtonColor });
       }
     },
-    [openMenuButtonColor, menuButtonColor, changeMenuColorOnOpen],
+    [
+      openMenuButtonColor,
+      menuButtonColor,
+      changeMenuColorOnOpen,
+    ],
   );
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (toggleBtnRef.current) {
       const targetColor = openRef.current ? openMenuButtonColor : menuButtonColor;
       gsap.set(toggleBtnRef.current, {
         color: changeMenuColorOnOpen ? targetColor : menuButtonColor,
       });
     }
-  }, [changeMenuColorOnOpen, menuButtonColor, openMenuButtonColor]);
+  }, [
+    changeMenuColorOnOpen,
+    menuButtonColor,
+    openMenuButtonColor,
+  ]);
 
   const animateText = useCallback((opening) => {
     const inner = textInnerRef.current;
@@ -337,8 +382,7 @@ export const StaggeredMenu = ({
     }
   }, [playClose, animateIcon, animateColor, animateText, onMenuClose]);
 
-  /* 🎯 Fixed: Satisfies prefer-arrow-callback, consistent-return, and no-trailing-spaces */
-  React.useEffect(() => {
+  useEffect(() => {
     if (!closeOnClickAway || !open) {
       return undefined;
     }
@@ -364,10 +408,12 @@ export const StaggeredMenu = ({
     isFixed ? ' fixed-wrapper' : ''
   }`;
 
+  const customAccentStyle = accentColor ? { '--sm-accent': accentColor } : undefined;
+
   return (
     <div
       className={wrapperClass}
-      style={accentColor ? { '--sm-accent': accentColor } : undefined}
+      style={customAccentStyle}
       data-position={position}
       data-open={open || undefined}
     >
@@ -424,7 +470,14 @@ export const StaggeredMenu = ({
       </header>
 
       <aside id="staggered-menu-panel" ref={panelRef} className="staggered-menu-panel" aria-hidden={!open}>
-        <div className="sm-panel-inner">
+        <div
+          className="sm-panel-inner"
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            height: '100%',
+          }}
+        >
           <ul className="sm-panel-list" data-numbering={displayItemNumbering || undefined}>
             {items && items.length ? (
               items.map((it, idx) => {
@@ -472,22 +525,31 @@ export const StaggeredMenu = ({
               </ul>
             </div>
           )}
+
+          <div
+            className="sm-panel-footer-credit"
+            style={{
+              marginTop: 'auto',
+              paddingTop: '2rem',
+              fontSize: '0.85rem',
+              fontFamily: 'monospace',
+              letterSpacing: '0.5px',
+              color: '#ffffff',
+            }}
+          >
+            Website built with ❤️ by Edwin! ©
+            {' '}
+            {new Date().getFullYear()}
+          </div>
         </div>
       </aside>
     </div>
   );
-};
+}
 
 StaggeredMenu.propTypes = {
   position: PropTypes.oneOf(['left', 'right']),
   colors: PropTypes.arrayOf(PropTypes.string),
-  items: PropTypes.arrayOf(
-    PropTypes.shape({
-      label: PropTypes.string.isRequired,
-      ariaLabel: PropTypes.string,
-      link: PropTypes.string.isRequired,
-    }),
-  ),
   socialItems: PropTypes.arrayOf(
     PropTypes.shape({
       label: PropTypes.string.isRequired,
@@ -510,8 +572,10 @@ StaggeredMenu.propTypes = {
 
 StaggeredMenu.defaultProps = {
   position: 'right',
-  colors: ['rgba(255, 255, 255, 0.05)', 'rgba(255, 255, 255, 0.02)'],
-  items: [],
+  colors: [
+    'rgba(255, 255, 255, 0.05)',
+    'rgba(255, 255, 255, 0.02)',
+  ],
   socialItems: [],
   displaySocials: true,
   displayItemNumbering: true,
