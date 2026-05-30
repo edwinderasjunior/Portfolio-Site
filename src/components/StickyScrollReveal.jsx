@@ -11,7 +11,7 @@ const styles = {
     borderRadius: '12px',
     padding: '2rem 1.5rem',
     width: '100%',
-    maxHeight: '650px', /* 🎯 Restored your layout fix */
+    maxHeight: '550px',
     maxWidth: '1400px',
     marginLeft: 'auto',
     marginRight: 'auto',
@@ -69,7 +69,11 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    boxShadow: '0 15px 35px rgba(0, 0, 0, 0.4)',
+    /* 🎯 Frosted Glass Effect: Gives the container its premium lens properties */
+    backdropFilter: 'blur(16px)',
+    WebkitBackdropFilter: 'blur(16px)',
+    border: '1px solid rgba(255, 255, 255, 0.08)',
+    boxShadow: '0 20px 40px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
     transition: 'background 0.5s ease',
     marginLeft: 'auto',
     marginRight: 'auto',
@@ -138,18 +142,18 @@ function StickyScroll({
 
   if (!content || content.length === 0) return null;
 
-  const linearGradients = [
-    'linear-gradient(to bottom right, #475569, #1e293b)',
-    'linear-gradient(to bottom right, #6366f1, #312e81)',
-    'linear-gradient(to bottom right, #0f766e, #111827)',
+  /* 🎯 Translucent Glass Gradients: Allows your portfolio background noise to shine through */
+  const glassGradients = [
+    'linear-gradient(135deg, rgba(71, 85, 105, 0.2), rgba(30, 41, 59, 0.4))',
+    'linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(49, 46, 129, 0.45))',
+    'linear-gradient(135deg, rgba(15, 118, 110, 0.15), rgba(17, 24, 39, 0.5))',
   ];
 
   const safeIndex = activeCard >= 0 && activeCard < content.length ? activeCard : 0;
-  const backgroundGradient = linearGradients[safeIndex % linearGradients.length];
+  const backgroundGradient = glassGradients[safeIndex % glassGradients.length];
 
   return (
     <div ref={wrapperRef} style={styles.wrapper} className="sticky-scroll-wrapper-container">
-      {/* SCROLLING CENTRAL TEXT CONTAINER */}
       <div style={styles.leftTrack}>
         <div style={styles.textContainer}>
           {content.map((item, index) => {
@@ -185,7 +189,6 @@ function StickyScroll({
         </div>
       </div>
 
-      {/* FIXED VISUAL SHOWCASE MODULE */}
       <div style={styles.rightWrapper}>
         <div
           style={{

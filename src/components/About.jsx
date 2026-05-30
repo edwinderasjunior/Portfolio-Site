@@ -35,47 +35,23 @@ function About(props) {
       .catch((err) => err);
   }, []);
 
-  /* 🎯 Grab your actual live database records first */
+  /* 🎯 Simply pull the full timeline array right from your updated JSON database */
   const rawTimeline = data && data.timeline ? [...data.timeline] : [];
-
-  /* 🎯 Force-inject 5 additional structural blocks right after your live text */
-  if (data) {
-    rawTimeline.push(
-      {
-        title: 'Future Milestone 01',
-        description: 'Placeholder paragraph track. This container block is ready to be swapped out with your next portfolio update later.',
-        label: 'Placeholder A',
-      },
-      {
-        title: 'Future Milestone 02',
-        description: 'Placeholder paragraph track. This container block is ready to be swapped out with your next portfolio update later.',
-        label: 'Placeholder B',
-      },
-      {
-        title: 'Future Milestone 03',
-        description: 'Placeholder paragraph track. This container block is ready to be swapped out with your next portfolio update later.',
-        label: 'Placeholder C',
-      },
-      {
-        title: 'Future Milestone 04',
-        description: 'Placeholder paragraph track. This container block is ready to be swapped out with your next portfolio update later.',
-        label: 'Placeholder D',
-      },
-      {
-        title: 'Future Milestone 05',
-        description: 'Placeholder paragraph track. This container block is ready to be swapped out with your next portfolio update later.',
-        label: 'Placeholder E',
-      },
-    );
-  }
 
   const scrollContent = rawTimeline.map((item) => ({
     title: item.title,
     description: item.description,
     content: (
-      <div className="sticky-pane-inner">
-        {item.label}
-      </div>
+      <img
+        src={item.imageUrl || '/images/placeholder.jpg'}
+        alt={item.title}
+        style={{
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+          display: 'block',
+        }}
+      />
     ),
   }));
 

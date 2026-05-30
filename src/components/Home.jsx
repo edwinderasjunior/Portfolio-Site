@@ -1,11 +1,9 @@
-import React from 'react';
-import {
-  Container,
-  Row,
-  Col,
-} from 'react-bootstrap';
+import React, { useState, useEffect } from 'react';
+import { Container, Row, Col } from 'react-bootstrap';
 import { Mail } from 'lucide-react';
 import { FaLinkedin, FaGithub } from 'react-icons/fa';
+import endpoints from '../constants/endpoints';
+import FallbackSpinner from './FallbackSpinner';
 import GlassSurface from './GlassSurface';
 import { Dock, DockIcon } from './Dock';
 import { StaggeredMenu } from './StaggeredMenu';
@@ -65,59 +63,34 @@ const styles = {
   },
 };
 
+/* 🎯 Dictionary lookup map matching strings from JSON to true graphic vectors */
+const iconLookupTable = {
+  linkedin: FaLinkedin,
+  github: FaGithub,
+  email: Mail,
+};
+
 function Home() {
-  const menuItems = [
-    { label: 'Contact', ariaLabel: 'Get in touch', link: '/contact' },
-  ];
+  const [data, setData] = useState(null);
 
-  const socialData = [
-    {
-      id: 'linkedin',
-      icon: FaLinkedin,
-      href: 'https://www.linkedin.com/in/edwinderasjr/',
-      label: 'LinkedIn',
-    },
-    {
-      id: 'github',
-      icon: FaGithub,
-      href: 'https://www.github.com/edwinderasjunior',
-      label: 'GitHub',
-    },
-    {
-      id: 'email',
-      icon: Mail,
-      href: 'mailto:me@edwinjr.com',
-      label: 'Email',
-    },
-  ];
+  useEffect(() => {
+    fetch(endpoints.home, {
+      method: 'GET',
+    })
+      .then((res) => res.json())
+      .then((res) => setData(res))
+      .catch((err) => err);
+  }, []);
 
-  const revealPhrases = [
-    'computer science.',
-    'cybersecurity.',
-    'ethical hacking.',
-    'new technology.',
-    'building computers.',
-    'learning new things.',
-    'solving problems.',
-    'tinking with hardware.',
-    'coding.',
-  ];
+  if (!data) {
+    return <FallbackSpinner />;
+  }
 
-  /* ==========================================================================
-     🎨 COLOR PALETTE PRESETS (Uncomment the one you want to use)
-     ========================================================================== */
+  const menuItems = data.menuItems || [];
+  const revealPhrases = data.phrases || [];
+  const socialData = data.socials || [];
 
-  // 1. Deep Cyber (Electric Indigo, Vivid Violet, Slate White Glint, Digital Blue)
   const activeColors = ['#6366f1', '#a855f7', '#e2e8f0', '#3b82f6'];
-
-  // 2. Monochrome Ice (Deep Slate, Metallic Silver, Pure White Shine, Liquid Aluminum)
-  // const activeColors = ['#475569', '#94a3b8', '#ffffff', '#cbd5e1'];
-
-  // 3. Aurora Glow (Neon Cyan, Matrix Emerald, Sage Mint Glow, Electric Blue)
-  // const activeColors = ['#06b6d4', '#10b981', '#6ee7b7', '#3b82f6'];
-
-  // 4. Sunset Gold (Vibrant Crimson, Bright Pink, Liquid Amber Gold, Deep Neon Rose)
-  // const activeColors = ['#f43f5e', '#ec4899', '#f59e0b', '#ff007f'];
 
   return (
     <>
@@ -156,12 +129,12 @@ function Home() {
                   margin: 0,
                 }}
               >
-                Edwin Deras Jr.
+                {data.name}
               </h1>
 
               <div style={styles.subtitleRow}>
                 <span style={styles.staticPrefix} className="hero-static-prefix">
-                  I love learning
+                  {data.prefix}
                 </span>
                 <DiaTextReveal
                   repeat
@@ -196,7 +169,8 @@ function Home() {
           }}
         >
           {socialData.map((social) => {
-            const IconComponent = social.icon;
+            /* 🎯 Pull matching vector fallback component from vector map */
+            const IconComponent = iconLookupTable[social.id] || Mail;
 
             return (
               <div key={social.id} className="dock-tooltip-wrapper">
@@ -215,7 +189,10 @@ function Home() {
                   }}
                 >
                   <DockIcon
-                    style={{ background: 'transparent', backgroundColor: 'transparent' }}
+                    style={{
+                      background: 'transparent',
+                      backgroundColor: 'transparent',
+                    }}
                   >
                     <a
                       href={social.href}
