@@ -1,7 +1,7 @@
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { useState, useEffect, useRef, Suspense } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import AudioPlayer from 'react-modern-audio-player';
 import NavBarWithRouter from './components/NavBar';
@@ -22,6 +22,65 @@ const playList = [
 
 function MainApp() {
   const [data, setData] = useState(null);
+  const playerRef = useRef(null);
+
+  const handleDragStart = (e, isTouch = false) => {
+    // 1. Don't start a drag if clicking interactive items
+    const isInteractive = e.target.closest(
+      'button, input, [role="slider"], [role="button"], .rmap-bar-progress-wrapper',
+    );
+    if (isInteractive) return;
+
+    e.stopPropagation();
+
+    const player = playerRef.current;
+    if (!player) return;
+
+    const rect = player.getBoundingClientRect();
+    const clientX = isTouch ? e.touches[0].clientX : e.clientX;
+    const clientY = isTouch ? e.touches[0].clientY : e.clientY;
+
+    const offsetX = clientX - rect.left;
+    const offsetY = clientY - rect.top;
+
+    const handleDragMove = (moveEvent) => {
+      const currentX = isTouch ? moveEvent.touches[0].clientX : moveEvent.clientX;
+      const currentY = isTouch ? moveEvent.touches[0].clientY : moveEvent.clientY;
+
+      let x = currentX - offsetX;
+      let y = currentY - offsetY;
+
+      // Bound it inside the window viewport with screen padding
+      const maxX = window.innerWidth - rect.width;
+      const maxY = window.innerHeight - rect.height;
+
+      x = Math.max(10, Math.min(x, maxX - 10));
+      y = Math.max(10, Math.min(y, maxY - 10));
+
+      player.style.left = `${x}px`;
+      player.style.top = `${y}px`;
+      player.style.right = 'auto';
+      player.style.bottom = 'auto';
+    };
+
+    const handleDragEnd = () => {
+      if (isTouch) {
+        window.removeEventListener('touchmove', handleDragMove);
+        window.removeEventListener('touchend', handleDragEnd);
+      } else {
+        window.removeEventListener('mousemove', handleDragMove);
+        window.removeEventListener('mouseup', handleDragEnd);
+      }
+    };
+
+    if (isTouch) {
+      window.addEventListener('touchmove', handleDragMove, { passive: false });
+      window.addEventListener('touchend', handleDragEnd);
+    } else {
+      window.addEventListener('mousemove', handleDragMove);
+      window.addEventListener('mouseup', handleDragEnd);
+    }
+  };
 
   useEffect(() => {
     fetch(endpoints.routes, {
@@ -111,10 +170,10 @@ function MainApp() {
       </main>
       {data && (
         <div
+          ref={playerRef}
           className="modern-player-wrapper"
-          onClick={(e) => e.stopPropagation()}
-          onMouseDown={(e) => e.stopPropagation()}
-          onMouseUp={(e) => e.stopPropagation()}
+          onMouseDown={(e) => handleDragStart(e, false)}
+          onTouchStart={(e) => handleDragStart(e, true)}
         >
           <AudioPlayer
             playList={playList}
