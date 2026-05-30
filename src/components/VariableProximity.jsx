@@ -64,6 +64,7 @@ const VariableProximity = forwardRef((props, ref) => {
   } = props;
 
   const letterRefs = useRef([]);
+  const letterCoordsRef = useRef([]);
   const interpolatedSettingsRef = useRef([]);
   const mousePositionRef = useMousePositionRef(containerRef);
   const lastPositionRef = useRef({ x: null, y: null });
@@ -109,27 +110,47 @@ const VariableProximity = forwardRef((props, ref) => {
     }
   };
 
+  useEffect(() => {
+    const handleResize = () => {
+      letterCoordsRef.current = [];
+    };
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   useAnimationFrame(() => {
     if (!containerRef?.current) return;
-    const containerRect = containerRef.current.getBoundingClientRect();
     const { x, y } = mousePositionRef.current;
     if (lastPositionRef.current.x === x && lastPositionRef.current.y === y) {
       return;
     }
     lastPositionRef.current = { x, y };
 
+    let containerRect = null;
+
     letterRefs.current.forEach((letterRef, index) => {
       if (!letterRef) return;
 
-      const rect = letterRef.getBoundingClientRect();
-      const letterCenterX = rect.left + rect.width / 2 - containerRect.left;
-      const letterCenterY = rect.top + rect.height / 2 - containerRect.top;
+      // Lazy cache coordinates on first mouse-move or on window resize
+      if (!letterCoordsRef.current[index]) {
+        if (!containerRect) {
+          containerRect = containerRef.current.getBoundingClientRect();
+        }
+        const rect = letterRef.getBoundingClientRect();
+        letterCoordsRef.current[index] = {
+          centerX: rect.left + rect.width / 2 - containerRect.left,
+          centerY: rect.top + rect.height / 2 - containerRect.top,
+        };
+      }
 
+      const coords = letterCoordsRef.current[index];
       const distance = calculateDistance(
-        mousePositionRef.current.x,
-        mousePositionRef.current.y,
-        letterCenterX,
-        letterCenterY,
+        x,
+        y,
+        coords.centerX,
+        coords.centerY,
       );
 
       const el = letterRef;

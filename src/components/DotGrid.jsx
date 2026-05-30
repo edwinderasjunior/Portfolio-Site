@@ -140,13 +140,11 @@ const DotGrid = ({
           dotStyle = `rgb(${r},${g},${b})`;
         }
 
-        ctx.save();
         ctx.beginPath();
         // Native rendering engine context arc completely cleans up vector artifacts
         ctx.arc(ox, oy, dotSize / 2, 0, Math.PI * 2);
         ctx.fillStyle = dotStyle;
         ctx.fill();
-        ctx.restore();
       });
 
       rafId = requestAnimationFrame(draw);

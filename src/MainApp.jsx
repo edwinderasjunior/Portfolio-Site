@@ -38,7 +38,8 @@ function MainApp() {
     >
       <StaggeredMenu
         isFixed
-        position="left"
+        position="right"
+        logoUrl="images/logo/LogoWhite.png"
         items={[]}
         socialItems={[]}
         displaySocials={false}
