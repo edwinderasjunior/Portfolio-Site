@@ -32,6 +32,39 @@ function MainApp() {
       .catch((err) => err);
   }, []);
 
+  // 🎯 Listen for the first user interaction to lift browser autoplay blocks and start audio
+  useEffect(() => {
+    let activated = false;
+    const handleFirstInteraction = () => {
+      if (activated) return;
+      activated = true;
+
+      window.removeEventListener('click', handleFirstInteraction);
+      window.removeEventListener('keydown', handleFirstInteraction);
+      window.removeEventListener('touchstart', handleFirstInteraction);
+
+      setTimeout(() => {
+        const audio = document.getElementById('rm-audio-player-audio');
+        if (audio && audio.paused) {
+          const playBtn = document.querySelector('.rmap-play-btn');
+          if (playBtn) {
+            playBtn.click();
+          }
+        }
+      }, 50);
+    };
+
+    window.addEventListener('click', handleFirstInteraction);
+    window.addEventListener('keydown', handleFirstInteraction);
+    window.addEventListener('touchstart', handleFirstInteraction);
+
+    return () => {
+      window.removeEventListener('click', handleFirstInteraction);
+      window.removeEventListener('keydown', handleFirstInteraction);
+      window.removeEventListener('touchstart', handleFirstInteraction);
+    };
+  }, []);
+
   return (
     <div
       className="MainApp"
@@ -76,41 +109,46 @@ function MainApp() {
           </Suspense>
         </Switch>
       </main>
-      <div
-        className="modern-player-wrapper"
-        onClick={(e) => e.stopPropagation()}
-        onMouseDown={(e) => e.stopPropagation()}
-        onMouseUp={(e) => e.stopPropagation()}
-      >
-        <AudioPlayer
-          playList={playList}
-          activeUI={{
-            all: true,
-            playList: false,
-            playbackRate: false,
-            repeatType: false,
-            artwork: true,
-          }}
-          placement={{
-            player: 'bottom-right',
-            interface: {
-              templateArea: {
-                artwork: 'row1-1',
-                trackInfo: 'row1-2',
-                playButton: 'row1-3',
-                volume: 'row1-4',
-                progress: 'row2-2',
-                trackTimeCurrent: 'row3-1',
-                trackTimeDuration: 'row3-4',
-                repeatType: 'row1-3',
-                playList: 'row1-3',
-                playbackRate: 'row1-3',
+      {data && (
+        <div
+          className="modern-player-wrapper"
+          onClick={(e) => e.stopPropagation()}
+          onMouseDown={(e) => e.stopPropagation()}
+          onMouseUp={(e) => e.stopPropagation()}
+        >
+          <AudioPlayer
+            playList={playList}
+            audioInitialState={{
+              isPlaying: true,
+              volume: 0.4,
+            }}
+            activeUI={{
+              all: true,
+              playList: false,
+              playbackRate: false,
+              repeatType: false,
+              artwork: false,
+            }}
+            placement={{
+              player: 'bottom-right',
+              interface: {
+                templateArea: {
+                  trackInfo: 'row1-1',
+                  playButton: 'row1-2',
+                  volume: 'row1-3',
+                  progress: 'row2-1',
+                  trackTimeCurrent: 'row3-1',
+                  trackTimeDuration: 'row3-3',
+                  repeatType: 'row1-2',
+                  playList: 'row1-2',
+                  playbackRate: 'row1-2',
+                },
               },
-            },
-          }}
-          colorScheme="dark"
-        />
-      </div>
+            }}
+            colorScheme="dark"
+          />
+        </div>
+      )}
     </div>
   );
 }

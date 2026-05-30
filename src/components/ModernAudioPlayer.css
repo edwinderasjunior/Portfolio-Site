@@ -3,7 +3,7 @@
   position: fixed;
   bottom: 24px;
   right: 24px;
-  width: 340px;
+  width: 290px;
   z-index: 999;
   box-sizing: border-box;
   will-change: transform;
@@ -50,12 +50,8 @@
 }
 
 /* 🎯 Symmetrical Column Alignments to completely prevent overflows */
+/* Left-align current track details */
 .modern-player-wrapper [style*="grid-area: row1-1"] {
-  justify-self: start !important;
-}
-
-/* Left-align current track details to the artwork */
-.modern-player-wrapper [style*="grid-area: row1-2"] {
   justify-self: start !important;
   width: 100%;
 }
@@ -66,23 +62,23 @@
 }
 
 /* Center play/pause & track controls precisely */
-.modern-player-wrapper [style*="grid-area: row1-3"] {
+.modern-player-wrapper [style*="grid-area: row1-2"] {
   justify-self: center !important;
 }
 
 /* Right-align volume trigger button */
-.modern-player-wrapper [style*="grid-area: row1-4"] {
+.modern-player-wrapper [style*="grid-area: row1-3"] {
   justify-self: end !important;
   display: flex;
   justify-content: flex-end;
 }
 
-/* Symmetrical alignment for bottom time indicators under artwork & volume */
+/* Symmetrical alignment for bottom time indicators */
 .modern-player-wrapper [style*="grid-area: row3-1"] {
   justify-self: start !important;
 }
 
-.modern-player-wrapper [style*="grid-area: row3-4"] {
+.modern-player-wrapper [style*="grid-area: row3-3"] {
   justify-self: end !important;
 }
 
@@ -103,15 +99,6 @@
 .modern-player-wrapper .rmap-bar-progress-wrapper {
   padding: 4px 0 !important;
   height: 12px !important;
-}
-
-/* Premium rounded artwork frame with smooth drop-shadow */
-.modern-player-wrapper .rmap-artwork-container img,
-.modern-player-wrapper .rmap-artwork-container .rmap-artwork-fallback {
-  border-radius: 8px !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25) !important;
-  width: 44px !important;
-  height: 44px !important;
 }
 
 /* Volume Panel positioning adjustments */

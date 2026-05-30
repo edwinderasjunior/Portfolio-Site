@@ -6,6 +6,7 @@ import React, {
   useEffect,
 } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
 import './StaggeredMenu.css';
 
@@ -516,14 +517,15 @@ function StaggeredMenu({
                 const uniqueKey = `item-${it.label}-${idx}`;
                 return (
                   <li className="sm-panel-itemWrap" key={uniqueKey}>
-                    <a
+                    <Link
                       className="sm-panel-item"
-                      href={it.link}
+                      to={it.link}
                       aria-label={it.ariaLabel}
                       data-index={idx + 1}
+                      onClick={closeMenu}
                     >
                       <span className="sm-panel-itemLabel">{it.label}</span>
-                    </a>
+                    </Link>
                   </li>
                 );
               })
