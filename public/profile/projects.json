@@ -6,6 +6,10 @@
       "bodyText": "Developed by Edwin Deras Jr., FlappyMC is a simple Flappy Bird clone built using Pygame in Python utilizing Minecraft game assets.",
       "links": [
         {
+          "text": "Explore",
+          "href": "/exploregame"
+        },
+        {
           "text": "GitHub",
           "href": "https://github.com/edwinderasjunior/FlappyMC"
         },

@@ -11,6 +11,7 @@ import GlobalStyles from './theme/GlobalStyles';
 import { darkTheme } from './theme/themes';
 import DotGrid from './components/DotGrid';
 import PdfViewerPage from './components/PdfViewerPage';
+import ExploreGame from './components/ExploreGame';
 
 const LazySilk = React.lazy(() => import('./components/Silk'));
 
@@ -22,10 +23,12 @@ const contentContainerStyle = {
   height: '100%',
   pointerEvents: 'none',
   overflowY: 'auto',
+  scrollBehavior: 'smooth',
 };
 
 function App() {
   const darkMode = useDarkMode(true);
+  const isExploreGame = window.location.pathname === '/exploregame';
 
   return (
     <AppContext.Provider value={{ darkMode }}>
@@ -43,48 +46,51 @@ function App() {
           <SmoothCursor />
 
           {/* Background Canvas Layer */}
-          <div
-            style={{
-              position: 'absolute',
-              inset: 0,
-              zIndex: 0,
-              pointerEvents: 'auto',
-            }}
-          >
-            <Suspense fallback={<div />}>
-              {/* 🎯 Toggle your global background theme vibes here: */}
-              <LazySilk
-                speed={3}
-                scale={0.8}
-                color="#24355c" /* Premium Midnight Slate */
-                noiseIntensity={1.0}
-                rotation={0.6}
-              />
-            </Suspense>
-
-            <DotGrid
-              dotSize={3.5}
-              gap={20}
-              baseColor="#ffffff"
-              activeColor="#ffffff"
-              proximity={120}
-              shockRadius={200}
-              shockStrength={4}
-              resistance={750}
-              returnDuration={1.2}
+          {!isExploreGame && (
+            <div
               style={{
                 position: 'absolute',
                 inset: 0,
-                opacity: 0.10,
+                zIndex: 0,
+                pointerEvents: 'auto',
               }}
-            />
-          </div>
+            >
+              <Suspense fallback={<div />}>
+                {/* 🎯 Toggle your global background theme vibes here: */}
+                <LazySilk
+                  speed={3}
+                  scale={0.8}
+                  color="#24355c" /* Premium Midnight Slate */
+                  noiseIntensity={1.0}
+                  rotation={0.6}
+                />
+              </Suspense>
+
+              <DotGrid
+                dotSize={3.5}
+                gap={20}
+                baseColor="#ffffff"
+                activeColor="#ffffff"
+                proximity={120}
+                shockRadius={200}
+                shockStrength={4}
+                resistance={750}
+                returnDuration={1.2}
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  opacity: 0.10,
+                }}
+              />
+            </div>
+          )}
 
           {/* Content Container Layer */}
           <div style={contentContainerStyle}>
             <BrowserRouter>
               <Switch>
                 <Route path="/view-pdf" component={PdfViewerPage} />
+                <Route path="/exploregame" component={ExploreGame} />
                 <Route path="*" component={MainApp} />
               </Switch>
             </BrowserRouter>

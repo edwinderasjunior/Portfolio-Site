@@ -124,6 +124,33 @@ const ProjectCard = (props) => {
                   );
                 }
 
+                const isInternal = link.href && link.href.startsWith('/') && !link.href.includes('.');
+
+                if (isInternal) {
+                  const targetVal = textStr.includes('explore') ? '_blank' : (link.target || '_self');
+                  return (
+                    <Link
+                      key={link.href}
+                      to={link.href}
+                      target={targetVal === '_self' ? undefined : targetVal}
+                      className="btn"
+                      style={styles.linkButtonStyle}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.backgroundColor = '#ffffff';
+                        e.currentTarget.style.color = '#0f172a';
+                        e.currentTarget.style.borderColor = '#ffffff';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.backgroundColor = 'transparent';
+                        e.currentTarget.style.color = '#ffffff';
+                        e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.4)';
+                      }}
+                    >
+                      {link.text}
+                    </Link>
+                  );
+                }
+
                 return (
                   <a
                     key={link.href}
