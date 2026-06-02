@@ -4,16 +4,16 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import useDarkMode from 'use-dark-mode';
-import { SmoothCursor } from './components/magicui/SmoothCursor';
+import { SmoothCursor } from './components/ui/magicui/SmoothCursor';
 import AppContext from './AppContext';
 import MainApp from './MainApp';
 import GlobalStyles from './theme/GlobalStyles';
-import { darkTheme } from './theme/themes';
-import DotGrid from './components/DotGrid';
-import PdfViewerPage from './components/PdfViewerPage';
-import ExploreGame from './components/ExploreGame';
+import { darkTheme, lightTheme } from './theme/themes';
+import DotGrid from './components/backgrounds/DotGrid';
+import PdfViewerPage from './components/pages/PdfViewerPage';
+import ExploreGame from './components/pages/ExploreGame';
 
-const LazySilk = React.lazy(() => import('./components/Silk'));
+const LazySilk = React.lazy(() => import('./components/backgrounds/Silk'));
 
 const contentContainerStyle = {
   position: 'absolute',
@@ -27,12 +27,18 @@ const contentContainerStyle = {
 };
 
 function App() {
-  const darkMode = useDarkMode(true);
+  const darkMode = useDarkMode(false);
   const isExploreGame = window.location.pathname === '/exploregame';
+
+  React.useEffect(() => {
+    if (localStorage.getItem('darkMode') === null) {
+      darkMode.disable();
+    }
+  }, [darkMode]);
 
   return (
     <AppContext.Provider value={{ darkMode }}>
-      <ThemeProvider theme={darkTheme}>
+      <ThemeProvider theme={darkMode.value ? darkTheme : lightTheme}>
         <GlobalStyles />
         <div
           className="App"
@@ -58,19 +64,20 @@ function App() {
               <Suspense fallback={<div />}>
                 {/* 🎯 Toggle your global background theme vibes here: */}
                 <LazySilk
-                  speed={3}
-                  scale={0.8}
-                  color="#24355c" /* Premium Midnight Slate */
-                  noiseIntensity={1.0}
+                  speed={6}
+                  scale={darkMode.value ? 1.0 : 1.0}
+                  color={darkMode.value ? '#1a2f5e' : '#12107cff'}
+                  noiseIntensity={darkMode.value ? 1.0 : 2.5}
                   rotation={0.6}
+                  opacity={darkMode.value ? 0.20 : 0.35}
                 />
               </Suspense>
 
               <DotGrid
                 dotSize={3.5}
                 gap={20}
-                baseColor="#ffffff"
-                activeColor="#ffffff"
+                baseColor={darkMode.value ? '#ffffff' : '#444444'}
+                activeColor={darkMode.value ? '#ffffff' : '#030303ff'}
                 proximity={120}
                 shockRadius={200}
                 shockStrength={4}
@@ -79,7 +86,7 @@ function App() {
                 style={{
                   position: 'absolute',
                   inset: 0,
-                  opacity: 0.10,
+                  opacity: darkMode.value ? 0.10 : 0.35,
                 }}
               />
             </div>

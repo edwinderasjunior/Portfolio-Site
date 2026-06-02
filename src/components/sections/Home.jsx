@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import { Mail } from 'lucide-react';
 import { FaLinkedin, FaGithub } from 'react-icons/fa';
-import endpoints from '../constants/endpoints';
-import FallbackSpinner from './FallbackSpinner';
-import GlassSurface from './GlassSurface';
-import { Dock, DockIcon } from './Dock';
-import { DiaTextReveal } from './DiaTextReveal';
+import endpoints from '../../constants/endpoints';
+import FallbackSpinner from '../ui/FallbackSpinner';
+import GlassSurface from '../ui/GlassSurface';
+import { Dock, DockIcon } from '../ui/Dock';
+import { DiaTextReveal } from '../ui/DiaTextReveal';
+import AppContext from '../../AppContext';
 
 const styles = {
   mainContainer: {
@@ -71,6 +72,8 @@ const iconLookupTable = {
 
 function Home() {
   const [data, setData] = useState(null);
+  const { darkMode } = useContext(AppContext);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     fetch(endpoints.home, {
@@ -79,12 +82,20 @@ function Home() {
       .then((res) => res.json())
       .then((res) => setData(res))
       .catch((err) => err);
+
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 576);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   if (!data) {
     return <FallbackSpinner />;
   }
 
+  const isDark = darkMode?.value;
   const revealPhrases = data.phrases || [];
   const socialData = data.socials || [];
 
@@ -92,7 +103,7 @@ function Home() {
 
   return (
     <>
-      <div className="section-content-container" style={styles.mainContainer}>
+      <div className="section-content-container" id="home" style={styles.mainContainer}>
         <Container fluid style={{ paddingLeft: 0, paddingRight: 0 }}>
           <Row className="align-items-center justify-content-center w-100 m-0">
             <Col
@@ -105,19 +116,22 @@ function Home() {
               className="p-0"
             >
               <h1
+                className="hero-title"
                 style={{
-                  fontSize: '3.8rem',
-                  fontWeight: 700,
-                  whiteSpace: 'nowrap',
-                  letterSpacing: '-1px',
-                  margin: 0,
+                  color: isDark ? '#ffffff' : '#121212',
                 }}
               >
                 {data.name}
               </h1>
 
               <div style={styles.subtitleRow}>
-                <span style={styles.staticPrefix} className="hero-static-prefix">
+                <span
+                  style={{
+                    ...styles.staticPrefix,
+                    color: isDark ? 'rgba(255, 255, 255, 0.65)' : 'rgba(0, 0, 0, 0.65)',
+                  }}
+                  className="hero-static-prefix"
+                >
                   {data.prefix}
                 </span>
                 <DiaTextReveal
@@ -127,7 +141,7 @@ function Home() {
                   repeatDelay={1.4}
                   text={revealPhrases}
                   colors={activeColors}
-                  textColor="rgba(255, 255, 255, 0.7)"
+                  textColor={isDark ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.7)'}
                   className="hero-dia-subtitle"
                 />
               </div>
@@ -147,7 +161,7 @@ function Home() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            gap: '20px',
+            gap: isMobile ? '12px' : '20px',
             overflow: 'visible',
             padding: 0,
           }}
@@ -155,39 +169,50 @@ function Home() {
           {socialData.map((social) => {
             /* 🎯 Pull matching vector fallback component from vector map */
             const IconComponent = iconLookupTable[social.id] || Mail;
+            const sizeVal = isMobile ? 50 : 60;
 
             return (
               <div key={social.id} className="dock-tooltip-wrapper">
                 <GlassSurface
-                  width={60}
-                  height={60}
-                  borderRadius={30}
+                  width={sizeVal}
+                  height={sizeVal}
+                  borderRadius={sizeVal / 2}
                   borderWidth={0.12}
-                  brightness={65}
+                  brightness={isDark ? 65 : 98}
                   opacity={0.88}
                   blur={12}
                   backgroundOpacity={0.02}
                   style={{
                     overflow: 'visible',
-                    boxShadow: '0 8px 24px 0 rgba(0, 0, 0, 0.25)',
+                    border: isDark
+                      ? '1px solid rgba(255, 255, 255, 0.12)'
+                      : '1px solid rgba(0, 0, 0, 0.08)',
+                    boxShadow: isDark
+                      ? '0 8px 24px 0 rgba(0, 0, 0, 0.25)'
+                      : '0 8px 24px 0 rgba(0, 0, 0, 0.08)',
                   }}
                 >
                   <DockIcon
                     style={{
                       background: 'transparent',
                       backgroundColor: 'transparent',
+                      width: isMobile ? '38px' : '48px',
+                      height: isMobile ? '38px' : '48px',
                     }}
                   >
                     <a
                       href={social.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      style={styles.socialLinkItem}
+                      style={{
+                        ...styles.socialLinkItem,
+                        color: isDark ? '#ffffff' : '#000000',
+                      }}
                       aria-label={social.label}
                       onMouseEnter={(e) => {
                         const s = e.currentTarget.style;
-                        s.backgroundColor = 'rgba(255, 255, 255, 0.12)';
-                        s.border = '1px solid rgba(255, 255, 255, 0.25)';
+                        s.backgroundColor = isDark ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.06)';
+                        s.border = isDark ? '1px solid rgba(255, 255, 255, 0.25)' : '1px solid rgba(0, 0, 0, 0.12)';
                         s.backdropFilter = 'blur(8px)';
                       }}
                       onMouseLeave={(e) => {
@@ -197,7 +222,13 @@ function Home() {
                         s.backdropFilter = 'none';
                       }}
                     >
-                      <IconComponent style={styles.iconVector} />
+                      <IconComponent
+                        style={{
+                          ...styles.iconVector,
+                          width: isMobile ? '20px' : '26px',
+                          height: isMobile ? '20px' : '26px',
+                        }}
+                      />
                     </a>
                   </DockIcon>
                 </GlassSurface>

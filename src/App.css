@@ -110,4 +110,128 @@ select,
   .hero-static-prefix {
     font-size: 1.3rem !important;
   }
+  .header {
+    font-size: 1.8rem !important;
+    margin-bottom: 1.2rem !important;
+  }
 }
+
+/* ==========================================================================
+   📱 MOBILE-FRIENDLY & RESPONSIVE COMPONENT LAYOUTS
+   ========================================================================== */
+
+/* Responsive Hero Title */
+.hero-title {
+  font-size: 3.8rem;
+  font-weight: 700;
+  white-space: nowrap;
+  letter-spacing: -1px;
+  margin: 0;
+  transition: font-size 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2.5rem;
+    white-space: normal; /* Allow wrapping on small screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-title {
+    font-size: 2rem;
+  }
+}
+
+/* Section Content Container with floating dock clearance */
+.section-content-container {
+  width: 100%;
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 80px 24px 120px 24px; /* 120px bottom padding to clear bottom floating dock */
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .section-content-container {
+    padding: 60px 16px 100px 16px;
+  }
+}
+
+/* Home section is centered and doesn't require massive top/bottom bumpers */
+#home.section-content-container {
+  padding-top: 20px;
+  padding-bottom: 80px;
+}
+
+/* ==========================================================================
+   🎮 EXPLOREGAME RESPONSIVE LAYOUT OVERRIDES
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .explore-back-btn {
+    position: static !important;
+    margin-top: 24px !important;
+    margin-bottom: 12px !important;
+    display: inline-block !important;
+  }
+  .explore-hero-section {
+    padding-top: 20px !important;
+  }
+  .explore-stacked-text {
+    font-size: 4rem !important;
+  }
+  .download-banner {
+    flex-direction: column !important;
+    padding: 40px 24px !important;
+    text-align: center !important;
+    gap: 24px !important;
+  }
+  .download-banner .banner-left {
+    align-items: center !important;
+    text-align: center !important;
+  }
+  .download-banner .banner-actions {
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: 12px !important;
+  }
+  .download-banner .banner-btn-primary,
+  .download-banner .banner-btn-secondary {
+    width: 100% !important;
+    text-align: center !important;
+  }
+  .explore-footer-content {
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 40px !important;
+  }
+  .explore-footer-brand {
+    align-items: center !important;
+  }
+  .explore-footer-links-grid {
+    gap: 32px !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+  }
+  .explore-footer-col {
+    align-items: center !important;
+    text-align: center !important;
+  }
+  .footer-massive-text {
+    font-size: 5rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .explore-hero-title {
+    font-size: 2rem !important;
+  }
+  .explore-stacked-text {
+    font-size: 2.5rem !important;
+  }
+  .footer-massive-text {
+    font-size: 3rem !important;
+  }
+}
+

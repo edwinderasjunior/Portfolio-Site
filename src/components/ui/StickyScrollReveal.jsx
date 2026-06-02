@@ -1,5 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {
+  useEffect,
+  useRef,
+  useState,
+  useContext,
+} from 'react';
 import PropTypes from 'prop-types';
+import { ThemeContext } from 'styled-components';
 
 const styles = {
   wrapper: {
@@ -85,11 +91,23 @@ function StickyScroll({
   contentClassName,
 }) {
   const [activeCard, setActiveCard] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
   const wrapperRef = useRef(null);
 
   const { cardBlock, cardTitle, cardDesc } = styles;
 
   useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    if (isMobile) return undefined;
+
     const wrapper = wrapperRef.current;
     if (!wrapper) return undefined;
 
@@ -138,7 +156,7 @@ function StickyScroll({
     return () => {
       observer.disconnect();
     };
-  }, [content]);
+  }, [content, isMobile]);
 
   if (!content || content.length === 0) return null;
 
@@ -151,6 +169,73 @@ function StickyScroll({
 
   const safeIndex = activeCard >= 0 && activeCard < content.length ? activeCard : 0;
   const backgroundGradient = glassGradients[safeIndex % glassGradients.length];
+
+  const theme = useContext(ThemeContext);
+  const isDark = theme?.bsPrimaryVariant === 'dark';
+
+  if (isMobile) {
+    const mobileContainerStyle = {
+      width: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '2.5rem',
+      padding: '0 1rem',
+    };
+
+    const cardWrapperStyle = {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '1rem',
+      textAlign: 'left',
+    };
+
+    const cardTitleStyle = {
+      fontSize: '1.6rem',
+      fontWeight: 700,
+      color: theme?.color || '#ffffff',
+      margin: 0,
+    };
+
+    const cardDescStyle = {
+      fontSize: '1.05rem',
+      color: isDark ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.7)',
+      lineHeight: '1.6',
+      margin: 0,
+    };
+
+    const imageContainerStyle = {
+      width: '100%',
+      maxHeight: '220px',
+      borderRadius: '8px',
+      overflow: 'hidden',
+      border: isDark ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid rgba(0, 0, 0, 0.1)',
+      boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+    };
+
+    return (
+      <div style={mobileContainerStyle}>
+        {content.map((item, index) => {
+          const cleanTitle = item.title.replace(/\s+/g, '-').toLowerCase();
+          const uniqueKey = `scroll-card-mob-${index}-${cleanTitle}`;
+          return (
+            <div key={uniqueKey} style={cardWrapperStyle}>
+              <h2 style={cardTitleStyle}>
+                {item.title}
+              </h2>
+              <p style={cardDescStyle}>
+                {item.description}
+              </p>
+              {item.content && (
+                <div style={imageContainerStyle}>
+                  {item.content}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
 
   return (
     <div ref={wrapperRef} style={styles.wrapper} className="sticky-scroll-wrapper-container">
@@ -177,10 +262,10 @@ function StickyScroll({
                   opacity: isCurrent ? 1 : 0.15,
                 }}
               >
-                <h2 style={cardTitle}>
+                <h2 style={{ ...cardTitle, color: theme?.color || '#ffffff' }}>
                   {item.title}
                 </h2>
-                <p style={cardDesc}>
+                <p style={{ ...cardDesc, color: isDark ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.7)' }}>
                   {item.description}
                 </p>
               </div>

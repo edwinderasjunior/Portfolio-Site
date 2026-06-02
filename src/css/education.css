@@ -94,3 +94,25 @@
     height: 45px !important;
     object-fit: contain;
 }
+
+/* ── Light Mode overrides ── */
+body.light-mode .timeline-main-wrapper .timeline-card-content {
+    background-color: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08) !important;
+}
+
+body.light-mode .timeline-main-wrapper .card-title {
+    color: #121212 !important;
+}
+
+body.light-mode .timeline-main-wrapper .card-description {
+    color: #4a4a4a !important;
+}
+
+body.light-mode .chrono-icons,
+body.light-mode .chrono-icons > div,
+body.light-mode .chrono-icons img {
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+}

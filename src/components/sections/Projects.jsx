@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Container, Row, Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import Fade from 'react-reveal/Fade';
-import Header from './Header';
-import endpoints from '../constants/endpoints';
-import ProjectCard from './projects/ProjectCard';
-import FallbackSpinner from './FallbackSpinner';
+import Header from '../ui/Header';
+import endpoints from '../../constants/endpoints';
+import ProjectCard from '../projects/ProjectCard';
+import FallbackSpinner from '../ui/FallbackSpinner';
+import AppContext from '../../AppContext';
 
 const styles = {
   containerStyle: {
@@ -14,22 +15,13 @@ const styles = {
   showMoreStyle: {
     margin: 25,
   },
-  customButtonStyle: {
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    color: '#ffffff',
-    border: '1px solid rgba(255, 255, 255, 0.15)',
-    padding: '10px 24px',
-    borderRadius: '8px',
-    backdropFilter: 'blur(10px)',
-    WebkitBackdropFilter: 'blur(10px)',
-    transition: 'all 0.3s ease',
-  },
 };
 
 const Projects = (props) => {
   const { header } = props;
   const [projectData, setProjectData] = useState(null);
   const [showMore, setShowMore] = useState(false);
+  const { darkMode } = useContext(AppContext);
 
   useEffect(() => {
     // 1. Fetch main portfolio development projects database records
@@ -44,6 +36,19 @@ const Projects = (props) => {
   if (!projectData) {
     return <FallbackSpinner />;
   }
+
+  const isDark = darkMode?.value;
+
+  const customButtonStyle = {
+    backgroundColor: isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.04)',
+    color: isDark ? '#ffffff' : '#000000',
+    border: isDark ? '1px solid rgba(255, 255, 255, 0.15)' : '1px solid rgba(0, 0, 0, 0.12)',
+    padding: '10px 24px',
+    borderRadius: '8px',
+    backdropFilter: 'blur(10px)',
+    WebkitBackdropFilter: 'blur(10px)',
+    transition: 'all 0.3s ease',
+  };
 
   /* 🎯 Cleaned lines 59, 61, and 62 below of any invisible spaces */
   const itemsLimit = showMore && projectData.projects
@@ -67,18 +72,18 @@ const Projects = (props) => {
 
           {!showMore && (
             <Button
-              style={{ ...styles.showMoreStyle, ...styles.customButtonStyle }}
+              style={{ ...styles.showMoreStyle, ...customButtonStyle }}
               onClick={() => setShowMore(true)}
               onMouseEnter={(e) => {
                 const s = e.currentTarget.style;
-                s.backgroundColor = 'rgba(255, 255, 255, 0.15)';
-                s.borderColor = 'rgba(255, 255, 255, 0.3)';
+                s.backgroundColor = isDark ? 'rgba(255, 255, 255, 0.15)' : 'rgba(0, 0, 0, 0.08)';
+                s.borderColor = isDark ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.2)';
                 s.transform = 'translateY(-2px)';
               }}
               onMouseLeave={(e) => {
                 const s = e.currentTarget.style;
-                s.backgroundColor = 'rgba(255, 255, 255, 0.05)';
-                s.borderColor = 'rgba(255, 255, 255, 0.15)';
+                s.backgroundColor = isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.04)';
+                s.borderColor = isDark ? 'rgba(255, 255, 255, 0.15)' : 'rgba(0, 0, 0, 0.12)';
                 s.transform = 'translateY(0px)';
               }}
             >

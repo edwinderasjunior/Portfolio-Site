@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Container } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import Fade from 'react-reveal';
-import Header from './Header';
-import endpoints from '../constants/endpoints';
-import FallbackSpinner from './FallbackSpinner';
-import StickyScroll from './StickyScrollReveal';
+import Header from '../ui/Header';
+import endpoints from '../../constants/endpoints';
+import FallbackSpinner from '../ui/FallbackSpinner';
+import StickyScroll from '../ui/StickyScrollReveal';
 
 const styles = {
   layoutSpacerBumper: {

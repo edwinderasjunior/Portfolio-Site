@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import ReactMarkdown from 'react-markdown';
 import PropTypes from 'prop-types';
 import Fade from 'react-reveal';
 import { Container } from 'react-bootstrap';
-import Header from './Header';
-import endpoints from '../constants/endpoints';
-import FallbackSpinner from './FallbackSpinner';
-import { LogoLoop } from './LogoLoop';
+import { ThemeContext } from 'styled-components';
+import Header from '../ui/Header';
+import endpoints from '../../constants/endpoints';
+import FallbackSpinner from '../ui/FallbackSpinner';
+import { LogoLoop } from '../ui/LogoLoop';
 
 const styles = {
   introTextContainer: {
@@ -40,10 +41,10 @@ const styles = {
     color: '#ffffff',
   },
 };
-
 function Skills(props) {
   const { header } = props;
   const [skillsData, setSkillsData] = useState(null);
+  const theme = useContext(ThemeContext);
 
   const renderSkillsIntro = (intro) => (
     <h4 style={styles.introTextContainer}>
@@ -100,7 +101,7 @@ function Skills(props) {
                             objectFit: 'contain',
                           }}
                         />
-                        <p style={styles.skillTextLabel}>{item.title}</p>
+                        <p style={{ ...styles.skillTextLabel, color: theme?.color || '#ffffff' }}>{item.title}</p>
                       </div>
                     ))}
                   </LogoLoop>

@@ -5,7 +5,7 @@ import React, {
   useRef,
 } from 'react';
 import { motion, useSpring } from 'framer-motion';
-import AppContext from '../../AppContext';
+import AppContext from '../../../AppContext';
 
 export function SmoothCursor() {
   const lastMousePos = useRef({ x: 0, y: 0 });

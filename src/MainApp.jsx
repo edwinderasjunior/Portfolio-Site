@@ -5,16 +5,19 @@ import React, {
   useState,
   useEffect,
   Suspense,
+  useContext,
 } from 'react';
 import { Switch, Route } from 'react-router-dom';
-import NavBarWithRouter from './components/NavBar';
-import Home from './components/Home';
+import NavBarWithRouter from './components/navigation/NavBar';
+import Home from './components/sections/Home';
 import endpoints from './constants/endpoints';
-import AssetViewer from './components/AssetViewer';
-import StaggeredMenu from './components/StaggeredMenu';
+import AssetViewer from './components/pages/AssetViewer';
+import StaggeredMenu from './components/navigation/StaggeredMenu';
+import AppContext from './AppContext';
 
 function MainApp() {
   const [data, setData] = useState(null);
+  const { darkMode } = useContext(AppContext);
 
   useEffect(() => {
     fetch(endpoints.routes, {
@@ -39,16 +42,16 @@ function MainApp() {
       <StaggeredMenu
         isFixed
         position="right"
-        logoUrl="images/logo/LogoWhite.webp"
+        logoUrl={darkMode?.value ? 'images/logo/LogoWhite.webp' : 'images/logo/LogoBlack.webp'}
         items={[]}
         socialItems={[]}
         displaySocials={false}
         displayItemNumbering
-        menuButtonColor="#fff"
-        openMenuButtonColor="#fff"
+        menuButtonColor={darkMode?.value ? '#fff' : '#000'}
+        openMenuButtonColor={darkMode?.value ? '#fff' : '#000'}
         changeMenuColorOnOpen
-        colors={['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 0)']}
-        accentColor="#ffffff"
+        colors={darkMode?.value ? ['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 0)'] : ['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 0)']}
+        accentColor={darkMode?.value ? '#ffffff' : '#000000'}
       />
       <NavBarWithRouter />
       <main
@@ -57,10 +60,9 @@ function MainApp() {
           flex: 1,
           display: 'flex',
           flexDirection: 'column',
-          justifyContent: 'center',
+          justifyContent: 'flex-start',
           alignItems: 'center',
           width: '100%',
-          height: '100%',
         }}
       >
         <Switch>
@@ -68,7 +70,7 @@ function MainApp() {
             <Route exact path="/" component={Home} />
             {data
               && data.sections.map((route) => {
-                const SectionComponent = React.lazy(() => import(`./components/${route.component}`));
+                const SectionComponent = React.lazy(() => import(`./components/sections/${route.component}`));
                 return (
                   <Route
                     key={route.headerTitle}

@@ -5,10 +5,10 @@ import ReactMarkdown from 'react-markdown';
 import PropTypes from 'prop-types';
 import { ThemeContext } from 'styled-components';
 import Fade from 'react-reveal';
-import Header from './Header';
-import endpoints from '../constants/endpoints';
-import FallbackSpinner from './FallbackSpinner';
-import '../css/experience.css';
+import Header from '../ui/Header';
+import endpoints from '../../constants/endpoints';
+import FallbackSpinner from '../ui/FallbackSpinner';
+import '../../css/experience.css';
 
 const styles = {
   ulStyle: {

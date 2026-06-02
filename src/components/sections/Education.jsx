@@ -4,10 +4,10 @@ import { Container } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import Fade from 'react-reveal';
 import { ThemeContext } from 'styled-components';
-import endpoints from '../constants/endpoints';
-import Header from './Header';
-import FallbackSpinner from './FallbackSpinner';
-import '../css/education.css';
+import endpoints from '../../constants/endpoints';
+import Header from '../ui/Header';
+import FallbackSpinner from '../ui/FallbackSpinner';
+import '../../css/education.css';
 
 function getLayoutConfig(windowWidth) {
   if (windowWidth < 576) {
@@ -36,7 +36,12 @@ function Education({ header }) {
       .then((res) => setEducationData(res))
       .catch((err) => err);
 
-    setLayoutConfig(getLayoutConfig(window?.innerWidth ?? 1024));
+    const handleResize = () => {
+      setLayoutConfig(getLayoutConfig(window?.innerWidth ?? 1024));
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   if (!educationData) {

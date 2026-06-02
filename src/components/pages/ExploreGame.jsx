@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import AntigravityBackground from './AntigravityBackground';
+import AntigravityBackground from '../backgrounds/AntigravityBackground';
 
 const styles = {
   container: {
@@ -262,7 +262,7 @@ const styles = {
   },
   twoColGrid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(440px, 1fr))',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
     gap: '32px',
     marginBottom: '32px',
   },
@@ -512,6 +512,7 @@ function ExploreGame() {
       {/* Pill-shaped Back Button on Left */}
       <Link
         to="/"
+        className="explore-back-btn"
         style={styles.backBtn}
         onMouseEnter={(e) => {
           e.currentTarget.style.backgroundColor = 'rgba(0, 0, 0, 0.08)';
@@ -524,10 +525,10 @@ function ExploreGame() {
       </Link>
 
       {/* Hero Section */}
-      <section style={styles.heroSection}>
+      <section style={styles.heroSection} className="explore-hero-section">
         <div style={styles.heroTitleWrapper}>
           <div style={styles.cursorLine} />
-          <h1 style={styles.heroTitle}>FlappyMC</h1>
+          <h1 style={styles.heroTitle} className="explore-hero-title">FlappyMC</h1>
         </div>
 
         <div style={styles.subtitleContainer}>
@@ -564,10 +565,10 @@ function ExploreGame() {
             />
           ) : (
             <div style={styles.stackedLogoFallback}>
-              <h2 style={styles.stackedText}>Antigravity</h2>
-              <h2 style={styles.stackedText}>Antigravity</h2>
-              <h2 style={styles.stackedText}>Antigravity</h2>
-              <h2 style={styles.stackedTextDim}>Antigravity</h2>
+              <h2 style={styles.stackedText} className="explore-stacked-text">Antigravity</h2>
+              <h2 style={styles.stackedText} className="explore-stacked-text">Antigravity</h2>
+              <h2 style={styles.stackedText} className="explore-stacked-text">Antigravity</h2>
+              <h2 style={{ ...styles.stackedTextDim, fontSize: 'inherit' }} className="explore-stacked-text">Antigravity</h2>
             </div>
           )}
         </div>
@@ -760,8 +761,8 @@ function ExploreGame() {
       </section>
 
       {/* Download Banner */}
-      <div style={styles.downloadBanner}>
-        <div style={styles.bannerLeft}>
+      <div style={styles.downloadBanner} className="download-banner">
+        <div style={styles.bannerLeft} className="banner-left">
           <h2 style={styles.bannerTitle}>
             Download Google
             <br />
@@ -769,9 +770,9 @@ function ExploreGame() {
             <br />
             Windows
           </h2>
-          <div style={styles.bannerActions}>
-            <span style={styles.bannerBtnPrimary}>Download for Windows</span>
-            <span style={styles.bannerBtnSecondary}>Explore the CLI & SDK</span>
+          <div style={styles.bannerActions} className="banner-actions">
+            <span style={styles.bannerBtnPrimary} className="banner-btn-primary">Download for Windows</span>
+            <span style={styles.bannerBtnSecondary} className="banner-btn-secondary">Explore the CLI & SDK</span>
           </div>
         </div>
         <div style={styles.bannerRight}>
@@ -782,19 +783,19 @@ function ExploreGame() {
 
       {/* Footer */}
       <footer style={styles.footer}>
-        <div style={styles.footerContent}>
-          <div style={styles.footerBrand}>
+        <div style={styles.footerContent} className="explore-footer-content">
+          <div style={styles.footerBrand} className="explore-footer-brand">
             <span style={styles.footerLogo}>Google Antigravity</span>
           </div>
-          <div style={styles.footerLinksGrid}>
-            <div style={styles.footerCol}>
+          <div style={styles.footerLinksGrid} className="explore-footer-links-grid">
+            <div style={styles.footerCol} className="explore-footer-col">
               <span style={styles.footerColTitle}>Company</span>
               <span style={styles.footerLink}>About Us</span>
               <span style={styles.footerLink}>Careers</span>
               <span style={styles.footerLink}>Status</span>
               <span style={styles.footerLink}>Changelog</span>
             </div>
-            <div style={styles.footerCol}>
+            <div style={styles.footerCol} className="explore-footer-col">
               <span style={styles.footerColTitle}>Resources</span>
               <span style={styles.footerLink}>Blog</span>
               <span style={styles.footerLink}>Guides</span>
@@ -804,7 +805,7 @@ function ExploreGame() {
         </div>
 
         {/* Massive Bottom Text */}
-        <h1 style={styles.footerMassiveText}>Antigravity</h1>
+        <h1 style={styles.footerMassiveText} className="footer-massive-text">Antigravity</h1>
       </footer>
     </div>
   );

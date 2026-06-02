@@ -323,6 +323,15 @@
     border-right: none;
     padding: 6em 2em 2em 2em;
   }
+  .staggered-menu-header {
+    padding: 1.25rem 1rem;
+  }
+  .sm-logo-img {
+    height: 32px;
+  }
+  .sm-toggle {
+    font-size: 0.9rem;
+  }
 }
 
 /* 🎯 Dia Text Reveal Mask Properties */
