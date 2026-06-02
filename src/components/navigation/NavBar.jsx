@@ -10,13 +10,12 @@ import {
   BriefcaseIcon,
   FolderGit2Icon,
   FileTextIcon,
-  SunIcon,
-  MoonIcon,
 } from 'lucide-react';
 import endpoints from '../../constants/endpoints';
 import AppContext from '../../AppContext';
 import { Dock, DockIcon } from '../ui/Dock';
 import GlassSurface from '../ui/GlassSurface';
+import ThemeToggler from '../ui/ThemeToggler';
 import './NavBar.css';
 
 const styles = {
@@ -233,42 +232,11 @@ const NavBar = () => {
                   height: isMobile ? '36px' : '48px',
                 }}
               >
-                <button
-                  type="button"
-                  onClick={darkMode?.toggle}
-                  style={{
-                    ...styles.innerItemLink,
-                    backgroundColor: 'transparent',
-                    border: '1px solid transparent',
-                    cursor: 'none',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    width: '100%',
-                    height: '100%',
-                  }}
-                  aria-label="Toggle light/dark theme"
-                >
-                  {darkMode?.value ? (
-                    <SunIcon
-                      style={{
-                        ...styles.iconVector,
-                        width: isMobile ? '16px' : '20px',
-                        height: isMobile ? '16px' : '20px',
-                      }}
-                      stroke={inactiveColor}
-                    />
-                  ) : (
-                    <MoonIcon
-                      style={{
-                        ...styles.iconVector,
-                        width: isMobile ? '16px' : '20px',
-                        height: isMobile ? '16px' : '20px',
-                      }}
-                      stroke={inactiveColor}
-                    />
-                  )}
-                </button>
+                <ThemeToggler
+                  toggleTheme={darkMode?.toggle}
+                  isMobile={isMobile}
+                  inactiveColor={inactiveColor}
+                />
               </DockIcon>
               <div className="dock-tooltip-content">
                 {darkMode?.value ? 'Light Mode' : 'Dark Mode'}

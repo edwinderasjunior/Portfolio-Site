@@ -9,7 +9,7 @@ import AppContext from './AppContext';
 import MainApp from './MainApp';
 import GlobalStyles from './theme/GlobalStyles';
 import { darkTheme, lightTheme } from './theme/themes';
-import DotGrid from './components/backgrounds/DotGrid';
+import DotField from './components/backgrounds/DotField';
 import PdfViewerPage from './components/pages/PdfViewerPage';
 import ExploreGame from './components/pages/ExploreGame';
 
@@ -73,20 +73,23 @@ function App() {
                 />
               </Suspense>
 
-              <DotGrid
-                dotSize={3.5}
-                gap={20}
-                baseColor={darkMode.value ? '#ffffff' : '#444444'}
-                activeColor={darkMode.value ? '#ffffff' : '#030303ff'}
-                proximity={120}
-                shockRadius={200}
-                shockStrength={4}
-                resistance={750}
-                returnDuration={1.2}
+              <DotField
+                dotRadius={3.5}
+                dotSpacing={17}
+                cursorRadius={500}
+                cursorForce={0.1}
+                bulgeOnly
+                bulgeStrength={52}
+                glowRadius={160}
+                sparkle
+                waveAmplitude={0}
+                gradientFrom={darkMode.value ? '#ffffff' : '#121212'}
+                gradientTo={darkMode.value ? 'rgba(180, 151, 207, 0.25)' : 'rgba(180, 151, 207, 0.08)'}
+                glowColor={darkMode.value ? '#120F17' : '#f5f8ff'}
                 style={{
                   position: 'absolute',
                   inset: 0,
-                  opacity: darkMode.value ? 0.10 : 0.35,
+                  opacity: darkMode.value ? 0.15 : 0.35,
                 }}
               />
             </div>
