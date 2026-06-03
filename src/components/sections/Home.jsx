@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import { Mail } from 'lucide-react';
 import { FaLinkedin, FaGithub } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 import endpoints from '../../constants/endpoints';
 import FallbackSpinner from '../ui/FallbackSpinner';
 import GlassSurface from '../ui/GlassSurface';
@@ -99,7 +100,9 @@ function Home() {
   const revealPhrases = data.phrases || [];
   const socialData = data.socials || [];
 
-  const activeColors = ['#6366f1', '#a855f7', '#e2e8f0', '#3b82f6'];
+  const activeColors = isDark
+    ? ['#e0afa0', '#bcb8b1', '#f4f3ee', '#8a817c'] // light warm gray & peach tones for dark bg
+    : ['#463f3a', '#8a817c', '#e0afa0', '#2d2725']; // dark warm gray & peach tones for light bg
 
   return (
     <>
@@ -115,6 +118,27 @@ function Home() {
               md={12}
               className="p-0"
             >
+              <div className="hero-avatar-wrapper">
+                <div className="avatar-ripple ripple-1" />
+                <div className="avatar-ripple ripple-2" />
+                <div className="avatar-ripple ripple-3" />
+                <Link
+                  to="/about"
+                  style={{
+                    display: 'inline-flex',
+                    textDecoration: 'none',
+                    borderRadius: '50%',
+                  }}
+                >
+                  <div className="hero-avatar-container">
+                    <img
+                      src="/images/avatar.webp"
+                      alt={data.name || 'Edwin Deras'}
+                      className="hero-avatar"
+                    />
+                  </div>
+                </Link>
+              </div>
               <h1
                 className="hero-title"
                 style={{
@@ -166,19 +190,23 @@ function Home() {
             padding: 0,
           }}
         >
-          {socialData.map((social) => {
+          {socialData.map((social, index) => {
             /* 🎯 Pull matching vector fallback component from vector map */
             const IconComponent = iconLookupTable[social.id] || Mail;
             const sizeVal = isMobile ? 50 : 60;
 
             return (
-              <div key={social.id} className="dock-tooltip-wrapper">
+              <div
+                key={social.id}
+                className={`dock-tooltip-wrapper social-float-button-${index % 3}`}
+                style={{ animationDelay: `${index * 0.4}s` }}
+              >
                 <GlassSurface
                   width={sizeVal}
                   height={sizeVal}
                   borderRadius={sizeVal / 2}
                   borderWidth={0.12}
-                  brightness={isDark ? 65 : 98}
+                  brightness={isDark ? 65 : 88}
                   opacity={0.88}
                   blur={12}
                   backgroundOpacity={0.02}

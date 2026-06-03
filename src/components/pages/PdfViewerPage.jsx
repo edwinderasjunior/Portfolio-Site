@@ -1,7 +1,6 @@
 import React from 'react';
 import { Container } from 'react-bootstrap';
 import { useHistory, useLocation, Link } from 'react-router-dom';
-import { EmbedPDF } from '@simplepdf/react-embed-pdf';
 
 const styles = {
   pageWrapper: {
@@ -86,11 +85,10 @@ const PdfViewerPage = () => {
 
         <div style={styles.pdfContainer}>
           {fileUrl ? (
-            <EmbedPDF
-              companyIdentifier="react-viewer"
-              mode="inline"
-              style={{ width: '100%', height: '100%' }}
-              documentURL={window.location.origin + fileUrl}
+            <iframe
+              src={fileUrl.startsWith('http') ? fileUrl : `${process.env.PUBLIC_URL}${fileUrl}`}
+              title="PDF Viewer"
+              style={{ width: '100%', height: '100%', border: 'none' }}
             />
           ) : (
             <div style={{ color: '#fff', padding: '20px' }}>

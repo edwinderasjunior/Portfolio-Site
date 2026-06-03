@@ -28,3 +28,15 @@
   visibility: visible;
   transform: translateX(-50%) translateY(0);
 }
+
+/* Tooltips positioned at the bottom */
+.dock-tooltip-wrapper.tooltip-bottom .dock-tooltip-content {
+  bottom: auto;
+  top: 100%;
+  margin-top: 12px;
+  transform: translateX(-50%) translateY(-4px);
+}
+
+.dock-tooltip-wrapper.tooltip-bottom:hover .dock-tooltip-content {
+  transform: translateX(-50%) translateY(0);
+}

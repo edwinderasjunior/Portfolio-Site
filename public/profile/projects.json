@@ -1,7 +1,7 @@
 {
   "projects": [
     {
-      "image": "images/projects/Pygame.jpg",
+      "image": "images/projects/Pygame.webp",
       "title": "FlappyMC Pygame",
       "bodyText": "Developed by Edwin Deras Jr., FlappyMC is a simple Flappy Bird clone built using Pygame in Python utilizing Minecraft game assets.",
       "links": [

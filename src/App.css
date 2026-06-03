@@ -117,8 +117,127 @@ select,
 }
 
 /* ==========================================================================
-   📱 MOBILE-FRIENDLY & RESPONSIVE COMPONENT LAYOUTS
+   Hero Avatar Styles
    ========================================================================== */
+
+/* Wrapper for continuous floating/hovering animation */
+.hero-avatar-wrapper {
+  position: relative;
+  animation: float 6s ease-in-out infinite;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-6px); /* Very slight, elegant hover/float */
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+/* Radar Ripples */
+.avatar-ripple {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: -1;
+  border: 2px solid rgba(224, 175, 160, 0.75);
+  box-shadow: 0 0 25px rgba(224, 175, 160, 0.45);
+}
+
+.ripple-1 {
+  animation: ripple-pulse 6s cubic-bezier(0.165, 0.84, 0.44, 1) infinite;
+}
+
+.ripple-2 {
+  animation: ripple-pulse 6s cubic-bezier(0.165, 0.84, 0.44, 1) infinite;
+  animation-delay: 2s;
+}
+
+.ripple-3 {
+  animation: ripple-pulse 6s cubic-bezier(0.165, 0.84, 0.44, 1) infinite;
+  animation-delay: 4s;
+}
+
+@keyframes ripple-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1.35);
+    opacity: 0;
+  }
+}
+
+.hero-avatar-container {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  border-radius: 50%;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(138, 129, 124, 0.35), rgba(224, 175, 160, 0.35));
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+              box-shadow 0.4s ease, 
+              background 0.4s ease;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.3);
+}
+
+.hero-avatar-container:hover {
+  transform: scale(1.06);
+  background: linear-gradient(135deg, rgba(138, 129, 124, 0.65), rgba(224, 175, 160, 0.65));
+  box-shadow: 0 15px 35px -5px rgba(138, 129, 124, 0.35), 
+              0 0 25px 5px rgba(224, 175, 160, 0.2);
+}
+
+.hero-avatar {
+  width: 230px;
+  height: 230px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 5px solid #bcb8b1; /* Sand color from palette */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), inset 0 2px 4px rgba(0, 0, 0, 0.15);
+  transition: border-color 0.4s ease, transform 0.4s ease;
+}
+
+/* Dark mode adjustments using standard body/html class selector */
+.dark-mode .hero-avatar {
+  border-color: #bcb8b1; /* Sand/light gray from palette to stand out on dark bg */
+}
+
+.dark-mode .hero-avatar-container {
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.6);
+}
+
+.dark-mode .hero-avatar-container:hover {
+  box-shadow: 0 15px 35px -5px rgba(138, 129, 124, 0.45), 
+              0 0 30px 8px rgba(224, 175, 160, 0.25);
+}
+
+/* Responsive queries */
+@media (max-width: 768px) {
+  .hero-avatar-wrapper {
+    margin-bottom: 16px;
+  }
+  .hero-avatar-container {
+    padding: 1px;
+  }
+  .hero-avatar {
+    width: 170px;
+    height: 170px;
+    border-width: 4px;
+  }
+}
 
 /* Responsive Hero Title */
 .hero-title {
@@ -148,20 +267,26 @@ select,
   width: 100%;
   max-width: 1140px;
   margin: 0 auto;
-  padding: 80px 24px 120px 24px; /* 120px bottom padding to clear bottom floating dock */
+  padding: 160px 24px 80px 24px; /* Increased top padding to clear top floating dock */
   box-sizing: border-box;
 }
 
 @media (max-width: 768px) {
   .section-content-container {
-    padding: 60px 16px 100px 16px;
+    padding: 125px 16px 60px 16px; /* Increased top padding on mobile */
   }
 }
 
 /* Home section is centered and doesn't require massive top/bottom bumpers */
 #home.section-content-container {
-  padding-top: 20px;
-  padding-bottom: 80px;
+  padding-top: 130px; /* Increased to safely clear the top navbar */
+  padding-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+  #home.section-content-container {
+    padding-top: 105px; /* Safely clear top navbar on mobile screens */
+  }
 }
 
 /* ==========================================================================
@@ -232,6 +357,49 @@ select,
   }
   .footer-massive-text {
     font-size: 3rem !important;
+  }
+}
+
+/* ==========================================================================
+   Social Buttons Floating Animation
+   ========================================================================== */
+
+.social-float-button-0 {
+  animation: social-float-1 4.5s ease-in-out infinite;
+}
+
+.social-float-button-1 {
+  animation: social-float-2 5.2s ease-in-out infinite;
+}
+
+.social-float-button-2 {
+  animation: social-float-3 4.8s ease-in-out infinite;
+}
+
+@keyframes social-float-1 {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px);
+  }
+  50% {
+    transform: translateY(-6px) translateX(1.5px);
+  }
+}
+
+@keyframes social-float-2 {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px);
+  }
+  50% {
+    transform: translateY(-4px) translateX(-1px);
+  }
+}
+
+@keyframes social-float-3 {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px);
+  }
+  50% {
+    transform: translateY(-7px) translateX(2px);
   }
 }
 

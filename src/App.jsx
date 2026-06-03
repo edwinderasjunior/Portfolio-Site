@@ -29,6 +29,7 @@ const contentContainerStyle = {
 function App() {
   const darkMode = useDarkMode(false);
   const isExploreGame = window.location.pathname === '/exploregame';
+  const [menuOpen, setMenuOpen] = React.useState(false);
 
   React.useEffect(() => {
     if (localStorage.getItem('darkMode') === null) {
@@ -37,7 +38,7 @@ function App() {
   }, [darkMode]);
 
   return (
-    <AppContext.Provider value={{ darkMode }}>
+    <AppContext.Provider value={{ darkMode, menuOpen, setMenuOpen }}>
       <ThemeProvider theme={darkMode.value ? darkTheme : lightTheme}>
         <GlobalStyles />
         <div
@@ -66,16 +67,18 @@ function App() {
                 <LazySilk
                   speed={6}
                   scale={darkMode.value ? 1.0 : 1.0}
-                  color={darkMode.value ? '#1a2f5e' : '#12107cff'}
-                  noiseIntensity={darkMode.value ? 1.0 : 2.5}
-                  rotation={0.6}
-                  opacity={darkMode.value ? 0.20 : 0.35}
+                  color={darkMode.value ? '#463f3a' : '#bcb8b1'}
+                  color2={darkMode.value ? '#8b8c89' : '#f4f3ee'}
+                  noiseIntensity={darkMode.value ? 2.0 : 2.5}
+                  rotation={1.6}
+                  opacity={darkMode.value ? 0.30 : 0.80}
+                  paused={menuOpen}
                 />
               </Suspense>
 
               <DotField
                 dotRadius={3.5}
-                dotSpacing={17}
+                dotSpacing={26}
                 cursorRadius={500}
                 cursorForce={0.1}
                 bulgeOnly
@@ -83,13 +86,14 @@ function App() {
                 glowRadius={160}
                 sparkle
                 waveAmplitude={0}
-                gradientFrom={darkMode.value ? '#ffffff' : '#121212'}
-                gradientTo={darkMode.value ? 'rgba(180, 151, 207, 0.25)' : 'rgba(180, 151, 207, 0.08)'}
-                glowColor={darkMode.value ? '#120F17' : '#f5f8ff'}
+                gradientFrom={darkMode.value ? '#bcb8b1' : '#121212'}
+                gradientTo={darkMode.value ? 'rgba(224, 175, 160, 0.40)' : 'rgba(138, 129, 124, 0.30)'}
+                glowColor={darkMode.value ? '#262220' : '#f4f3ee'}
+                paused={menuOpen}
                 style={{
                   position: 'absolute',
                   inset: 0,
-                  opacity: darkMode.value ? 0.15 : 0.35,
+                  opacity: darkMode.value ? 0.45 : 0.65,
                 }}
               />
             </div>

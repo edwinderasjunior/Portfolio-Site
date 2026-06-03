@@ -68,12 +68,12 @@ function Skills(props) {
 
   return (
     <>
-      <Header title={header} />
       <Fade>
         <div
           className="section-content-container"
           style={{ background: 'transparent', backgroundColor: 'transparent' }}
         >
+          <Header title={header} />
           <Container style={{ background: 'transparent', backgroundColor: 'transparent' }}>
             {renderSkillsIntro(skillsData.intro)}
 

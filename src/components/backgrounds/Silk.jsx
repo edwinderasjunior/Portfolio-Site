@@ -35,6 +35,7 @@ varying vec3 vPosition;
 
 uniform float uTime;
 uniform vec3 uColor;
+uniform vec3 uColor2;
 uniform float uSpeed;
 uniform float uScale;
 uniform float uRotation;
@@ -69,8 +70,9 @@ void main() {
                                    0.02 * tOffset) +
                            sin(20.0 * (tex.x + tex.y - 0.1 * tOffset)));
 
-  vec4 col = vec4(uColor, 1.0) * vec4(pattern) - rnd / 15.0 * uNoiseIntensity;
-  col.a = pattern * uOpacity;
+  vec3 finalColor = mix(uColor2, uColor, pattern);
+  vec4 col = vec4(finalColor, 1.0) - rnd / 15.0 * uNoiseIntensity;
+  col.a = uOpacity;
   gl_FragColor = col;
 }
 `;
@@ -90,6 +92,9 @@ function SilkPlane({ uniforms }) {
       const matUniforms = meshRef.current.material.uniforms;
       if (matUniforms.uColor && uniforms.uColor) {
         matUniforms.uColor.value.copy(uniforms.uColor.value);
+      }
+      if (matUniforms.uColor2 && uniforms.uColor2) {
+        matUniforms.uColor2.value.copy(uniforms.uColor2.value);
       }
       if (matUniforms.uSpeed && uniforms.uSpeed) {
         matUniforms.uSpeed.value = uniforms.uSpeed.value;
@@ -143,9 +148,11 @@ const Silk = ({
   speed,
   scale,
   color,
+  color2,
   noiseIntensity,
   rotation,
   opacity,
+  paused,
 }) => {
   const uniforms = useMemo(
     () => ({
@@ -153,6 +160,7 @@ const Silk = ({
       uScale: { value: scale },
       uNoiseIntensity: { value: noiseIntensity },
       uColor: { value: new Color(...hexToNormalizedRGB(color)) },
+      uColor2: { value: new Color(...hexToNormalizedRGB(color2)) },
       uRotation: { value: rotation },
       uOpacity: { value: opacity },
       uTime: { value: 0 },
@@ -165,14 +173,15 @@ const Silk = ({
     uniforms.uScale.value = scale;
     uniforms.uNoiseIntensity.value = noiseIntensity;
     uniforms.uColor.value.copy(new Color(...hexToNormalizedRGB(color)));
+    uniforms.uColor2.value.copy(new Color(...hexToNormalizedRGB(color2)));
     uniforms.uRotation.value = rotation;
     uniforms.uOpacity.value = opacity;
-  }, [speed, scale, color, noiseIntensity, rotation, opacity, uniforms]);
+  }, [speed, scale, color, color2, noiseIntensity, rotation, opacity, uniforms]);
 
   return (
     <Canvas
       dpr={[1, 2]}
-      frameloop="always"
+      frameloop={paused ? 'never' : 'always'}
       style={{ width: '100%', height: '100%', display: 'block' }}
     >
       <SilkPlane uniforms={uniforms} />
@@ -184,18 +193,22 @@ Silk.propTypes = {
   speed: PropTypes.number,
   scale: PropTypes.number,
   color: PropTypes.string,
+  color2: PropTypes.string,
   noiseIntensity: PropTypes.number,
   rotation: PropTypes.number,
   opacity: PropTypes.number,
+  paused: PropTypes.bool,
 };
 
 Silk.defaultProps = {
   speed: 9,
   scale: 1.0,
   color: '#70cd4bff',
+  color2: '#8b8c89',
   noiseIntensity: 1.0,
-  rotation: 0.4,
+  rotation: 1.6,
   opacity: 1.0,
+  paused: false,
 };
 
 export default Silk;

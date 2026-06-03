@@ -17,7 +17,7 @@ import AppContext from './AppContext';
 
 function MainApp() {
   const [data, setData] = useState(null);
-  const { darkMode } = useContext(AppContext);
+  const { darkMode, setMenuOpen } = useContext(AppContext);
 
   useEffect(() => {
     fetch(endpoints.routes, {
@@ -52,6 +52,8 @@ function MainApp() {
         changeMenuColorOnOpen
         colors={darkMode?.value ? ['rgba(0, 0, 0, 0)', 'rgba(0, 0, 0, 0)'] : ['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 0)']}
         accentColor={darkMode?.value ? '#ffffff' : '#000000'}
+        onMenuOpen={() => setMenuOpen(true)}
+        onMenuClose={() => setMenuOpen(false)}
       />
       <NavBarWithRouter />
       <main

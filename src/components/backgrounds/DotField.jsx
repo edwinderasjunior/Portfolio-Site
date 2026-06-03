@@ -18,6 +18,7 @@ const DotField = ({
   gradientTo,
   style,
   className,
+  paused,
 }) => {
   const canvasRef = useRef(null);
   const svgRef = useRef(null);
@@ -60,6 +61,7 @@ const DotField = ({
     waveAmplitude,
     gradientFrom,
     gradientTo,
+    paused,
   };
 
   useEffect(() => {
@@ -156,6 +158,10 @@ const DotField = ({
     let frameCount = 0;
 
     function renderLoop() {
+      if (propsRef.current.paused) {
+        requestRef.current = requestAnimationFrame(renderLoop);
+        return;
+      }
       frameCount += 1;
       const dots = dotsRef.current;
       const mouse = mouseRef.current;
@@ -363,6 +369,7 @@ DotField.propTypes = {
     PropTypes.number,
   ])),
   className: PropTypes.string,
+  paused: PropTypes.bool,
 };
 
 DotField.defaultProps = {
@@ -380,6 +387,7 @@ DotField.defaultProps = {
   gradientTo: 'rgba(180, 151, 207, 0.25)',
   style: {},
   className: '',
+  paused: false,
 };
 
 export default DotField;

@@ -57,10 +57,9 @@ const Projects = (props) => {
 
   return (
     <>
-      <Header title={header} />
-
       {/* 🎯 Cleaned line 83 below of trailing whitespace */}
       <div className="section-content-container">
+        <Header title={header} />
         <Container style={styles.containerStyle}>
           <Row xs={1} sm={1} md={2} lg={3} className="g-4">
             {projectData.projects?.slice(0, itemsLimit).map((project) => (

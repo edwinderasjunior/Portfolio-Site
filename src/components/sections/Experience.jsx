@@ -51,9 +51,8 @@ function Experience(props) {
 
   return (
     <>
-      <Header title={header} />
-
       <div className="section-content-container">
+        <Header title={header} />
         <Container>
           <Timeline lineColor={theme.timelineLineColor}>
             {experienceData.map((item) => (

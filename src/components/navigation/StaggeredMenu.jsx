@@ -4,11 +4,14 @@ import React, {
   useRef,
   useState,
   useEffect,
+  useContext,
 } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
 import AudioPlayer from 'react-modern-audio-player';
+import GlassSurface from '../ui/GlassSurface';
+import AppContext from '../../AppContext';
 import './StaggeredMenu.css';
 import './ModernAudioPlayer.css';
 
@@ -113,6 +116,19 @@ function StaggeredMenu({
   const textInnerRef = useRef(null);
   const textWrapRef = useRef(null);
   const [textLines, setTextLines] = useState(['Menu', 'Close']);
+
+  const { darkMode } = useContext(AppContext);
+  const isDark = darkMode?.value;
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const openTlRef = useRef(null);
   const closeTweenRef = useRef(null);
@@ -509,14 +525,54 @@ function StaggeredMenu({
       <header className="staggered-menu-header" aria-label="Main navigation header">
         <div className="sm-logo" aria-label="Logo">
           {logoUrl && (
-            <img
-              src={logoUrl}
-              alt="Logo"
-              className="sm-logo-img"
-              draggable={false}
-              width={220}
-              height={48}
-            />
+            <Link
+              to="/"
+              className="sm-logo-link-wrapper"
+              style={{
+                display: 'inline-flex',
+                textDecoration: 'none',
+                borderRadius: '50%',
+                cursor: 'pointer',
+              }}
+            >
+              <GlassSurface
+                width={isMobile ? 44 : 64}
+                height={isMobile ? 44 : 64}
+                borderRadius={isMobile ? 22 : 32}
+                borderWidth={0.12}
+                brightness={isDark ? 65 : 88}
+                opacity={0.88}
+                blur={12}
+                backgroundOpacity={0.02}
+                className="logo-glass-surface"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  border: isDark
+                    ? '1px solid rgba(255, 255, 255, 0.12)'
+                    : '1px solid rgba(0, 0, 0, 0.08)',
+                  boxShadow: isDark
+                    ? '0 8px 24px 0 rgba(0, 0, 0, 0.25)'
+                    : '0 8px 24px 0 rgba(0, 0, 0, 0.08)',
+                }}
+              >
+                <img
+                  src={logoUrl}
+                  alt="Logo"
+                  className="sm-logo-img"
+                  draggable={false}
+                  width={isMobile ? 32 : 48}
+                  height={isMobile ? 32 : 48}
+                  style={{
+                    height: isMobile ? '26px' : '40px',
+                    width: 'auto',
+                    objectFit: 'contain',
+                    display: 'block',
+                  }}
+                />
+              </GlassSurface>
+            </Link>
           )}
         </div>
         <button

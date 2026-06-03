@@ -50,9 +50,9 @@ function Education({ header }) {
 
   return (
     <>
-      <Header title={header} />
       <Fade>
         <div style={{ width: layoutConfig.width }} className="section-content-container">
+          <Header title={header} />
           <Container>
             <Chrono
               hideControls

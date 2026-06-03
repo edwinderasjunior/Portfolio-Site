@@ -21,7 +21,7 @@ import './NavBar.css';
 const styles = {
   dockFixedWrapper: {
     position: 'fixed',
-    bottom: '24px',
+    top: '24px',
     left: '50%',
     transform: 'translateX(-50%)',
     zIndex: 2000,
@@ -116,9 +116,10 @@ const NavBar = () => {
           height={isMobile ? 52 : 64}
           borderRadius={isMobile ? 18 : 24}
           borderWidth={0.08}
-          brightness={darkMode?.value ? 60 : 98}
+          brightness={darkMode?.value ? 60 : 85}
           opacity={0.9}
-          blur={8}
+          blur={darkMode?.value ? 8 : 16}
+          displace={darkMode?.value ? 0 : 12}
           backgroundOpacity={0.03}
           style={{
             border: darkMode?.value
@@ -174,7 +175,7 @@ const NavBar = () => {
                     />
                   )}
 
-                  <div className="dock-tooltip-wrapper">
+                  <div className="dock-tooltip-wrapper tooltip-bottom">
                     <DockIcon
                       style={{
                         background: 'transparent',
@@ -223,7 +224,7 @@ const NavBar = () => {
               }}
             />
 
-            <div className="dock-tooltip-wrapper">
+            <div className="dock-tooltip-wrapper tooltip-bottom">
               <DockIcon
                 style={{
                   background: 'transparent',

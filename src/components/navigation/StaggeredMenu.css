@@ -51,16 +51,49 @@
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
-  background: transparent;
-  border: none;
+  background: rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   cursor: pointer;
-  color: #ffffff;
+  color: #000000;
   font-weight: 500;
-  font-size: 1.1rem;
+  font-size: 1.0rem;
   line-height: 1;
   overflow: visible;
   text-transform: uppercase;
   letter-spacing: 1px;
+  
+  /* Bubble styling */
+  padding: 0.6rem 1.1rem;
+  border-radius: 18px;
+  box-shadow: 0 8px 24px 0 rgba(0, 0, 0, 0.06);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+              box-shadow 0.3s ease,
+              background-color 0.3s ease,
+              border-color 0.3s ease,
+              color 0.3s ease;
+}
+
+.sm-toggle:hover {
+  transform: scale(1.05);
+  background-color: rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.15);
+  box-shadow: 0 12px 30px 0 rgba(0, 0, 0, 0.1);
+}
+
+/* Dark mode overrides using standard .dark-mode selector */
+.dark-mode .sm-toggle {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  box-shadow: 0 8px 24px 0 rgba(0, 0, 0, 0.25);
+}
+
+.dark-mode .sm-toggle:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 12px 30px 0 rgba(0, 0, 0, 0.35);
 }
 
 [data-position='right'] .sm-toggle {
@@ -139,8 +172,8 @@
   height: 100%;
   border-left: 1px solid rgba(255, 255, 255, 0.12);
   background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(20px) brightness(60%);
-  -webkit-backdrop-filter: blur(20px) brightness(60%);
+  backdrop-filter: blur(10px) brightness(60%);
+  -webkit-backdrop-filter: blur(10px) brightness(60%);
   box-shadow: -10px 0 30px 0 rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
@@ -331,6 +364,8 @@
   }
   .sm-toggle {
     font-size: 0.9rem;
+    padding: 0.5rem 0.9rem;
+    border-radius: 14px;
   }
 }
 
@@ -345,4 +380,28 @@
   background-size: 100% 100%;
   will-change: width, background-image;
   transition: width 0.38s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ==========================================================================
+   Logo Glass Surface Hover & transition effects (Matches Toggle button)
+   ========================================================================== */
+
+.logo-glass-surface {
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+              box-shadow 0.3s ease,
+              background-color 0.3s ease,
+              border-color 0.3s ease !important;
+}
+
+.sm-logo-link-wrapper:hover .logo-glass-surface {
+  transform: scale(1.05) !important;
+  background-color: rgba(0, 0, 0, 0.05) !important;
+  border-color: rgba(0, 0, 0, 0.15) !important;
+  box-shadow: 0 12px 30px 0 rgba(0, 0, 0, 0.1) !important;
+}
+
+.dark-mode .sm-logo-link-wrapper:hover .logo-glass-surface {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
+  box-shadow: 0 12px 30px 0 rgba(0, 0, 0, 0.35) !important;
 }
