@@ -83,6 +83,15 @@ export const DiaTextReveal = ({
   const timerRef = useRef(null);
   const tweenRef = useRef(null);
 
+  const colorsRef = useRef(colors);
+  const textColorRef = useRef(textColor);
+
+  useEffect(() => {
+    colorsRef.current = colors;
+    textColorRef.current = textColor;
+    setGradientStr(buildGradient(animObjRef.current.pos, colors, textColor));
+  }, [colors, textColor]);
+
   useEffect(() => {
     const el = spanRef.current;
     if (!el || !isMulti) return;
@@ -99,7 +108,9 @@ export const DiaTextReveal = ({
       delay,
       ease: 'power2.inOut',
       onUpdate: () => {
-        setGradientStr(buildGradient(animObjRef.current.pos, colors, textColor));
+        setGradientStr(
+          buildGradient(animObjRef.current.pos, colorsRef.current, textColorRef.current),
+        );
       },
       onComplete: () => {
         if (!repeat) return;
@@ -110,7 +121,7 @@ export const DiaTextReveal = ({
         }, repeatDelay * 1000);
       },
     });
-  }, [colors, textColor, duration, delay, repeat, repeatDelay, texts.length]);
+  }, [duration, delay, repeat, repeatDelay, texts.length]);
 
   useEffect(() => {
     playSweep();

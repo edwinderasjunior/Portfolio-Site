@@ -12,6 +12,7 @@ import { darkTheme, lightTheme } from './theme/themes';
 import DotField from './components/backgrounds/DotField';
 import PdfViewerPage from './components/pages/PdfViewerPage';
 import ExploreGame from './components/pages/ExploreGame';
+import GlobalLenis from './components/ui/GlobalLenis';
 
 const LazySilk = React.lazy(() => import('./components/backgrounds/Silk'));
 
@@ -21,7 +22,7 @@ const contentContainerStyle = {
   zIndex: 1,
   width: '100%',
   height: '100%',
-  pointerEvents: 'none',
+  pointerEvents: 'auto',
   overflowY: 'auto',
   scrollBehavior: 'smooth',
 };
@@ -73,6 +74,7 @@ function App() {
                   rotation={1.6}
                   opacity={darkMode.value ? 0.30 : 0.80}
                   paused={menuOpen}
+                  isDark={darkMode.value}
                 />
               </Suspense>
 
@@ -90,6 +92,7 @@ function App() {
                 gradientTo={darkMode.value ? 'rgba(224, 175, 160, 0.40)' : 'rgba(138, 129, 124, 0.30)'}
                 glowColor={darkMode.value ? '#262220' : '#f4f3ee'}
                 paused={menuOpen}
+                isDark={darkMode.value}
                 style={{
                   position: 'absolute',
                   inset: 0,
@@ -102,6 +105,7 @@ function App() {
           {/* Content Container Layer */}
           <div style={contentContainerStyle}>
             <BrowserRouter>
+              <GlobalLenis />
               <Switch>
                 <Route path="/view-pdf" component={PdfViewerPage} />
                 <Route path="/exploregame" component={ExploreGame} />

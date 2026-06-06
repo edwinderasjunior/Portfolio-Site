@@ -15,6 +15,15 @@ import AssetViewer from './components/pages/AssetViewer';
 import StaggeredMenu from './components/navigation/StaggeredMenu';
 import AppContext from './AppContext';
 
+const sectionComponents = {
+  About: React.lazy(() => import('./components/sections/About')),
+  Skills: React.lazy(() => import('./components/sections/Skills')),
+  Education: React.lazy(() => import('./components/sections/Education')),
+  Experience: React.lazy(() => import('./components/sections/Experience')),
+  Projects: React.lazy(() => import('./components/sections/Projects')),
+  GamePlayer: React.lazy(() => import('./components/sections/GamePlayer')),
+};
+
 function MainApp() {
   const [data, setData] = useState(null);
   const { darkMode, setMenuOpen } = useContext(AppContext);
@@ -72,7 +81,8 @@ function MainApp() {
             <Route exact path="/" component={Home} />
             {data
               && data.sections.map((route) => {
-                const SectionComponent = React.lazy(() => import(`./components/sections/${route.component}`));
+                const SectionComponent = sectionComponents[route.component];
+                if (!SectionComponent) return null;
                 return (
                   <Route
                     key={route.headerTitle}

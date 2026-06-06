@@ -4,10 +4,39 @@ import PropTypes from 'prop-types';
 import Fade from 'react-reveal';
 import { Container } from 'react-bootstrap';
 import { ThemeContext } from 'styled-components';
+import {
+  SiJavascript,
+  SiPython,
+  SiMysql,
+  SiCplusplus,
+  SiAndroid,
+  SiReact,
+  SiNodedotjs,
+  SiAndroidstudio,
+  SiGit,
+  SiDocker,
+} from 'react-icons/si';
+import { FaJava } from 'react-icons/fa';
 import Header from '../ui/Header';
 import endpoints from '../../constants/endpoints';
 import FallbackSpinner from '../ui/FallbackSpinner';
 import { LogoLoop } from '../ui/LogoLoop';
+
+const iconMap = {
+  java: FaJava,
+  javascript: SiJavascript,
+  js: SiJavascript,
+  python: SiPython,
+  mysql: SiMysql,
+  'c++': SiCplusplus,
+  android: SiAndroid,
+  react: SiReact,
+  nodejs: SiNodedotjs,
+  'node.js': SiNodedotjs,
+  'android studio': SiAndroidstudio,
+  git: SiGit,
+  docker: SiDocker,
+};
 
 const styles = {
   introTextContainer: {
@@ -66,6 +95,9 @@ function Skills(props) {
     return <FallbackSpinner />;
   }
 
+  const isDark = theme?.bsPrimaryVariant === 'dark';
+  const iconColor = isDark ? '#ffffff' : '#000000';
+
   return (
     <>
       <Fade>
@@ -90,20 +122,40 @@ function Skills(props) {
                     hoverSpeed={0}
                     fadeOut
                   >
-                    {category.items.map((item) => (
-                      <div key={item.title} style={styles.skillItemWrapper}>
-                        <img
-                          src={item.icon}
-                          alt={item.title}
-                          style={{
-                            height: '75px',
-                            width: '75px',
-                            objectFit: 'contain',
-                          }}
-                        />
-                        <p style={{ ...styles.skillTextLabel, color: theme?.color || '#ffffff' }}>{item.title}</p>
-                      </div>
-                    ))}
+                    {category.items.map((item) => {
+                      const IconComponent = iconMap[item.title.toLowerCase()];
+                      return (
+                        <div key={item.title} style={styles.skillItemWrapper}>
+                          {IconComponent ? (
+                            <IconComponent
+                              size={75}
+                              color={iconColor}
+                              style={{
+                                transition: 'color 0.3s ease',
+                              }}
+                            />
+                          ) : (
+                            <img
+                              src={item.icon}
+                              alt={item.title}
+                              style={{
+                                height: '75px',
+                                width: '75px',
+                                objectFit: 'contain',
+                              }}
+                            />
+                          )}
+                          <p
+                            style={{
+                              ...styles.skillTextLabel,
+                              color: theme?.color || '#ffffff',
+                            }}
+                          >
+                            {item.title}
+                          </p>
+                        </div>
+                      );
+                    })}
                   </LogoLoop>
                 </div>
               </div>

@@ -18,6 +18,53 @@ const hexToNormalizedRGB = (hex) => {
   ];
 };
 
+const darkSilk1List = [
+  [0.27, 0.25, 0.23],
+  [0.08, 0.13, 0.21],
+  [0.15, 0.08, 0.19],
+  [0.21, 0.08, 0.08],
+];
+
+const darkSilk2List = [
+  [0.55, 0.55, 0.54],
+  [0.05, 0.09, 0.14],
+  [0.09, 0.04, 0.11],
+  [0.12, 0.05, 0.05],
+];
+
+const lightSilk1List = [
+  [0.74, 0.72, 0.69],
+  [0.82, 0.88, 0.98],
+  [0.92, 0.85, 0.99],
+  [0.99, 0.86, 0.83],
+];
+
+const lightSilk2List = [
+  [0.96, 0.95, 0.93],
+  [0.94, 0.96, 0.97],
+  [0.97, 0.95, 0.99],
+  [0.99, 0.96, 0.96],
+];
+
+const lerpVal = (a, b, t) => a + (b - a) * t;
+
+const interpolateArray = (list, progress) => {
+  const segmentCount = list.length - 1;
+  const rawIndex = progress * segmentCount;
+  const index1 = Math.floor(rawIndex);
+  const index2 = Math.min(index1 + 1, segmentCount);
+  const t = rawIndex - index1;
+
+  const c1 = list[index1];
+  const c2 = list[index2];
+
+  return [
+    lerpVal(c1[0], c2[0], t),
+    lerpVal(c1[1], c2[1], t),
+    lerpVal(c1[2], c2[2], t),
+  ];
+};
+
 const vertexShader = `
 varying vec2 vUv;
 varying vec3 vPosition;
@@ -77,7 +124,7 @@ void main() {
 }
 `;
 
-function SilkPlane({ uniforms }) {
+function SilkPlane({ uniforms, isDark }) {
   const { viewport } = useThree();
   const meshRef = useRef();
 
@@ -116,7 +163,36 @@ function SilkPlane({ uniforms }) {
 
   useFrame((_, delta) => {
     if (meshRef.current && meshRef.current.material.uniforms) {
-      meshRef.current.material.uniforms.uTime.value += 0.1 * delta;
+      const matUniforms = meshRef.current.material.uniforms;
+      matUniforms.uTime.value += 0.1 * delta;
+
+      const isAbout = window.location.pathname === '/about';
+      const { portfolioScrollLenis } = window;
+
+      if (isAbout && portfolioScrollLenis) {
+        const { scroll, limit } = portfolioScrollLenis;
+        const progress = limit > 0 ? Math.min(Math.max(scroll / limit, 0), 1) : 0;
+
+        const s1List = isDark ? darkSilk1List : lightSilk1List;
+        const s2List = isDark ? darkSilk2List : lightSilk2List;
+
+        const rgb1 = interpolateArray(s1List, progress);
+        const rgb2 = interpolateArray(s2List, progress);
+
+        if (matUniforms.uColor && matUniforms.uColor.value) {
+          matUniforms.uColor.value.setRGB(rgb1[0], rgb1[1], rgb1[2]);
+        }
+        if (matUniforms.uColor2 && matUniforms.uColor2.value) {
+          matUniforms.uColor2.value.setRGB(rgb2[0], rgb2[1], rgb2[2]);
+        }
+      } else {
+        if (matUniforms.uColor && uniforms.uColor) {
+          matUniforms.uColor.value.copy(uniforms.uColor.value);
+        }
+        if (matUniforms.uColor2 && uniforms.uColor2) {
+          matUniforms.uColor2.value.copy(uniforms.uColor2.value);
+        }
+      }
     }
   });
 
@@ -142,6 +218,11 @@ SilkPlane.propTypes = {
       ]),
     }),
   ).isRequired,
+  isDark: PropTypes.bool,
+};
+
+SilkPlane.defaultProps = {
+  isDark: false,
 };
 
 const Silk = ({
@@ -153,6 +234,7 @@ const Silk = ({
   rotation,
   opacity,
   paused,
+  isDark,
 }) => {
   const uniforms = useMemo(
     () => ({
@@ -184,7 +266,7 @@ const Silk = ({
       frameloop={paused ? 'never' : 'always'}
       style={{ width: '100%', height: '100%', display: 'block' }}
     >
-      <SilkPlane uniforms={uniforms} />
+      <SilkPlane uniforms={uniforms} isDark={isDark} />
     </Canvas>
   );
 };
@@ -198,6 +280,7 @@ Silk.propTypes = {
   rotation: PropTypes.number,
   opacity: PropTypes.number,
   paused: PropTypes.bool,
+  isDark: PropTypes.bool,
 };
 
 Silk.defaultProps = {
@@ -209,6 +292,7 @@ Silk.defaultProps = {
   rotation: 1.6,
   opacity: 1.0,
   paused: false,
+  isDark: false,
 };
 
 export default Silk;

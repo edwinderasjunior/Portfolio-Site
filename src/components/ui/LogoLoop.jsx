@@ -9,17 +9,6 @@ const styles = {
     display: 'flex',
     padding: '15px 0',
   },
-  fadeMask: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    pointerEvents: 'none',
-    zIndex: 2,
-    background: 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0) 15%, '
-      + 'rgba(255,255,255,0) 85%, transparent 100%)',
-  },
 };
 
 export function LogoLoop({
@@ -52,21 +41,31 @@ export function LogoLoop({
   const duration = `${(totalLength * baseDuration) / (speed / 10)}s`;
   const animationDirection = direction === 'right' ? 'reverse' : 'normal';
 
-  return (
-    <div style={styles.container}>
-      {fadeOut && <div style={styles.fadeMask} />}
+  const containerStyle = {
+    ...styles.container,
+    ...(fadeOut ? {
+      maskImage: 'linear-gradient(to right, rgba(0, 0, 0, 0) 0%, '
+        + 'rgba(0, 0, 0, 1) 15%, rgba(0, 0, 0, 1) 85%, rgba(0, 0, 0, 0) 100%)',
+      WebkitMaskImage: 'linear-gradient(to right, rgba(0, 0, 0, 0) 0%, '
+        + 'rgba(0, 0, 0, 1) 15%, rgba(0, 0, 0, 1) 85%, rgba(0, 0, 0, 0) 100%)',
+    } : {}),
+  };
 
+  return (
+    <div style={containerStyle}>
       <style>
         {`
           @keyframes marqueeInfiniteLoop {
             0% { transform: translateX(0); }
-            100% { transform: translateX(-33.3333%); }
+            100% { transform: translateX(-50%); }
           }
           .marquee-wrapper {
             display: flex;
             width: max-content;
             animation: marqueeInfiniteLoop ${duration} linear infinite;
             animation-direction: ${animationDirection};
+            will-change: transform;
+            transform: translate3d(0, 0, 0);
           }
           .marquee-group {
             display: flex;
@@ -82,9 +81,6 @@ export function LogoLoop({
 
       <div className="marquee-wrapper">
         <div className="marquee-group">
-          {renderItems()}
-        </div>
-        <div className="marquee-group" aria-hidden="true">
           {renderItems()}
         </div>
         <div className="marquee-group" aria-hidden="true">
