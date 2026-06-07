@@ -3,71 +3,6 @@ import PropTypes from 'prop-types';
 
 const TWO_PI = Math.PI * 2;
 
-const lerpVal = (a, b, t) => a + (b - a) * t;
-
-const darkDotFromList = [
-  [188, 184, 177, 0.3],
-  [50, 74, 95, 0.3],
-  [92, 61, 112, 0.3],
-  [112, 61, 61, 0.3],
-];
-
-const darkDotToList = [
-  [224, 175, 160, 0.2],
-  [95, 129, 157, 0.2],
-  [180, 151, 207, 0.2],
-  [224, 160, 160, 0.2],
-];
-
-const darkGlowList = [
-  [38, 34, 32],
-  [10, 16, 24],
-  [17, 7, 21],
-  [21, 8, 8],
-];
-
-const lightDotFromList = [
-  [18, 18, 18, 0.15],
-  [47, 60, 126, 0.15],
-  [74, 21, 75, 0.15],
-  [209, 91, 71, 0.15],
-];
-
-const lightDotToList = [
-  [138, 129, 124, 0.15],
-  [120, 150, 220, 0.15],
-  [180, 140, 220, 0.15],
-  [240, 160, 140, 0.15],
-];
-
-const lightGlowList = [
-  [244, 243, 238],
-  [227, 242, 253],
-  [243, 229, 245],
-  [255, 235, 238],
-];
-
-const interpolateColorArray = (list, progress) => {
-  const segmentCount = list.length - 1;
-  const rawIndex = progress * segmentCount;
-  const index1 = Math.floor(rawIndex);
-  const index2 = Math.min(index1 + 1, segmentCount);
-  const t = rawIndex - index1;
-
-  const c1 = list[index1];
-  const c2 = list[index2];
-
-  const r = Math.round(lerpVal(c1[0], c2[0], t));
-  const g = Math.round(lerpVal(c1[1], c2[1], t));
-  const b = Math.round(lerpVal(c1[2], c2[2], t));
-
-  if (c1.length > 3) {
-    const a = lerpVal(c1[3], c2[3], t);
-    return `rgba(${r}, ${g}, ${b}, ${a})`;
-  }
-  return `rgb(${r}, ${g}, ${b})`;
-};
-
 const DotField = ({
   dotRadius,
   dotSpacing,
@@ -268,26 +203,9 @@ const DotField = ({
         circle.style.opacity = glowOpacityRef.current;
       }
 
-      const isAbout = window.location.pathname === '/about';
-      const { portfolioScrollLenis } = window;
-
-      let activeGradientFrom = currentProps.gradientFrom;
-      let activeGradientTo = currentProps.gradientTo;
-      let activeGlowColor = currentProps.glowColor;
-
-      if (isAbout && portfolioScrollLenis) {
-        const { scroll, limit } = portfolioScrollLenis;
-        const progress = limit > 0 ? Math.min(Math.max(scroll / limit, 0), 1) : 0;
-
-        const isDarkVal = currentProps.isDark;
-        const fromList = isDarkVal ? darkDotFromList : lightDotFromList;
-        const toList = isDarkVal ? darkDotToList : lightDotToList;
-        const glowList = isDarkVal ? darkGlowList : lightGlowList;
-
-        activeGradientFrom = interpolateColorArray(fromList, progress);
-        activeGradientTo = interpolateColorArray(toList, progress);
-        activeGlowColor = interpolateColorArray(glowList, progress);
-      }
+      const activeGradientFrom = currentProps.gradientFrom;
+      const activeGradientTo = currentProps.gradientTo;
+      const activeGlowColor = currentProps.glowColor;
 
       if (stop0Ref.current) {
         stop0Ref.current.setAttribute('stop-color', activeGlowColor);

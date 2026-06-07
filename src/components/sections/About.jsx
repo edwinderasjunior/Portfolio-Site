@@ -7,7 +7,6 @@ import Header from '../ui/Header';
 import endpoints from '../../constants/endpoints';
 import FallbackSpinner from '../ui/FallbackSpinner';
 import ScrollStack, { ScrollStackItem } from '../ui/ScrollStack';
-import ShinyText from '../ui/ShinyText';
 
 const styles = {
   layoutSpacerBumper: {
@@ -27,7 +26,6 @@ const styles = {
 function About(props) {
   const { header } = props;
   const [aboutData, setAboutData] = useState(null);
-  const [isScrolled, setIsScrolled] = useState(false);
   const theme = useContext(ThemeContext);
   const isDark = theme?.bsPrimaryVariant === 'dark';
 
@@ -41,44 +39,85 @@ function About(props) {
       .catch((err) => err);
   }, []);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 20) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-    };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
-
   if (!aboutData) {
     return <FallbackSpinner />;
   }
 
   const rawTimeline = aboutData.timeline ? [...aboutData.timeline] : [];
 
-  const cardStyle = {
-    background: isDark
-      ? 'linear-gradient(135deg, rgba(61, 53, 50, 0.65), rgba(38, 34, 32, 0.85))'
-      : 'linear-gradient(135deg, rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0.15))',
-    border: isDark
-      ? '1px solid rgba(224, 175, 160, 0.15)'
-      : '1px solid rgba(255, 255, 255, 0.45)',
-    backdropFilter: 'blur(30px)',
-    WebkitBackdropFilter: 'blur(30px)',
-  };
+  const getCardStyle = (index, total) => {
+    const t = total > 1 ? index / (total - 1) : 0;
 
-  let headerBg = 'transparent';
-  if (isScrolled) {
-    headerBg = theme?.background
-      ? `${theme.background}a6`
-      : 'rgba(29, 27, 26, 0.65)';
-  }
+    let r;
+    let g;
+    let b;
+    let a;
+    let borderR;
+    let borderG;
+    let borderB;
+    let borderA;
+
+    if (isDark && t <= 0.5) {
+      // Dark Mode, First Half:
+      // Dark Brown (45, 38, 36, 0.85) -> Light Brown (115, 95, 85, 0.78)
+      const factor = t / 0.5;
+      r = Math.round(45 + factor * (115 - 45));
+      g = Math.round(38 + factor * (95 - 38));
+      b = Math.round(36 + factor * (85 - 36));
+      a = (0.85 + factor * (0.78 - 0.85)).toFixed(2);
+
+      borderR = Math.round(115 + factor * (165 - 115));
+      borderG = Math.round(95 + factor * (135 - 95));
+      borderB = Math.round(85 + factor * (120 - 85));
+      borderA = (0.2 + factor * (0.25 - 0.2)).toFixed(2);
+    } else if (isDark) {
+      // Dark Mode, Second Half:
+      // Light Brown (115, 95, 85, 0.78) -> Orange (224, 175, 160, 0.75)
+      const factor = (t - 0.5) / 0.5;
+      r = Math.round(115 + factor * (224 - 115));
+      g = Math.round(95 + factor * (175 - 95));
+      b = Math.round(85 + factor * (160 - 85));
+      a = (0.78 + factor * (0.75 - 0.78)).toFixed(2);
+
+      borderR = Math.round(165 + factor * (224 - 165));
+      borderG = Math.round(135 + factor * (175 - 135));
+      borderB = Math.round(120 + factor * (160 - 120));
+      borderA = (0.25 + factor * (0.4 - 0.25)).toFixed(2);
+    } else if (t <= 0.5) {
+      // Light Mode, First Half:
+      // Darker Brown (120, 105, 95, 0.35) -> Light Brown (180, 160, 150, 0.30)
+      const factor = t / 0.5;
+      r = Math.round(120 + factor * (180 - 120));
+      g = Math.round(105 + factor * (160 - 105));
+      b = Math.round(95 + factor * (150 - 95));
+      a = (0.35 + factor * (0.3 - 0.35)).toFixed(2);
+
+      borderR = Math.round(120 + factor * (180 - 120));
+      borderG = Math.round(105 + factor * (160 - 105));
+      borderB = Math.round(95 + factor * (150 - 95));
+      borderA = (0.2 + factor * (0.25 - 0.2)).toFixed(2);
+    } else {
+      // Light Mode, Second Half:
+      // Light Brown (180, 160, 150, 0.30) -> Orange (224, 175, 160, 0.35)
+      const factor = (t - 0.5) / 0.5;
+      r = Math.round(180 + factor * (224 - 180));
+      g = Math.round(160 + factor * (175 - 160));
+      b = Math.round(150 + factor * (160 - 150));
+      a = (0.3 + factor * (0.35 - 0.3)).toFixed(2);
+
+      borderR = Math.round(180 + factor * (224 - 180));
+      borderG = Math.round(160 + factor * (175 - 160));
+      borderB = Math.round(150 + factor * (160 - 150));
+      borderA = (0.25 + factor * (0.35 - 0.25)).toFixed(2);
+    }
+
+    return {
+      background: `rgba(${r}, ${g}, ${b}, ${a})`,
+      border: `1px solid rgba(${borderR}, ${borderG}, ${borderB}, ${borderA})`,
+      backdropFilter: 'blur(30px)',
+      WebkitBackdropFilter: 'blur(30px)',
+    };
+  };
 
   const stickyHeaderStyle = {
     position: 'fixed',
@@ -88,23 +127,9 @@ function About(props) {
     zIndex: 100,
     paddingTop: '122px',
     paddingBottom: '16px',
-    background: headerBg,
-    backdropFilter: isScrolled ? 'blur(10px)' : 'none',
-    WebkitBackdropFilter: isScrolled ? 'blur(10px)' : 'none',
-    transition: 'background-color 0.3s ease, '
-      + 'backdrop-filter 0.3s ease, '
-      + '-webkit-backdrop-filter 0.3s ease',
-  };
-
-  const scrollIndicatorStyle = {
-    position: 'fixed',
-    bottom: '40px',
-    left: '50%',
-    transform: 'translateX(-50%)',
-    zIndex: 90,
-    opacity: isScrolled ? 0 : 1,
-    transition: 'opacity 0.4s ease',
-    pointerEvents: 'none',
+    background: 'transparent',
+    backdropFilter: 'none',
+    WebkitBackdropFilter: 'none',
   };
 
   return (
@@ -119,14 +144,17 @@ function About(props) {
             <div style={styles.scrollWrapperContainer}>
               <ScrollStack
                 itemDistance={580}
-                itemStackDistance={0}
-                blurAmount={15}
+                itemStackDistance={30}
+                blurAmount={0}
               >
                 {rawTimeline.map((item, index) => {
                   const cleanTitle = item.title.replace(/\s+/g, '-').toLowerCase();
                   const uniqueKey = `scroll-card-std-${index}-${cleanTitle}`;
                   return (
-                    <ScrollStackItem key={uniqueKey} style={cardStyle}>
+                    <ScrollStackItem
+                      key={uniqueKey}
+                      style={getCardStyle(index, rawTimeline.length)}
+                    >
                       <div className="scroll-stack-card-content">
                         <div className="scroll-stack-card-text">
                           <h3 style={{ color: theme?.color || (isDark ? '#ffffff' : '#0f172a') }}>
@@ -151,16 +179,6 @@ function About(props) {
           </Fade>
         </Container>
 
-        {/* Floating Scroll Indicator */}
-        <div style={scrollIndicatorStyle}>
-          <ShinyText
-            text="Scroll to reveal more..."
-            speed={2.5}
-            color={isDark ? 'rgba(255, 255, 255, 0.75)' : 'rgba(0, 0, 0, 0.75)'}
-            shineColor={isDark ? '#ffffff' : '#000000'}
-            className="scroll-indicator-shiny"
-          />
-        </div>
       </div>
     </>
   );

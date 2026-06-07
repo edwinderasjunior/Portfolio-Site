@@ -103,7 +103,7 @@ function App() {
           )}
 
           {/* Content Container Layer */}
-          <div style={contentContainerStyle}>
+          <div style={contentContainerStyle} className="app-scroll-container">
             <BrowserRouter>
               <GlobalLenis />
               <Switch>

@@ -273,7 +273,7 @@ select,
 
 @media (max-width: 768px) {
   .section-content-container {
-    padding: 125px 16px 60px 16px; /* Increased top padding on mobile */
+    padding: 125px 16px 160px 16px; /* Increased top & bottom padding on mobile */
   }
 }
 

@@ -10,11 +10,8 @@ import FallbackSpinner from '../ui/FallbackSpinner';
 import '../../css/education.css';
 
 function getLayoutConfig(windowWidth) {
-  if (windowWidth < 576) {
-    return { width: '90vw', mode: 'VERTICAL' };
-  }
   if (windowWidth < 768) {
-    return { width: '90vw', mode: 'VERTICAL_ALTERNATING' };
+    return { width: '90vw', mode: 'VERTICAL' };
   }
   if (windowWidth < 1024) {
     return { width: '75vw', mode: 'VERTICAL_ALTERNATING' };
@@ -55,6 +52,7 @@ function Education({ header }) {
           <Header title={header} />
           <Container>
             <Chrono
+              key={layoutConfig.mode}
               hideControls
               allowDynamicUpdate
               useReadMore={false}

@@ -105,7 +105,7 @@
 /* 📱 Responsive overrides for mobile/tablet */
 @media (max-width: 992px) {
   .scroll-stack-inner {
-    padding: 10vh 2rem 45rem;
+    padding: 10vh 2rem 75rem;
   }
   .scroll-stack-card {
     height: 38rem;
@@ -126,7 +126,7 @@
 
 @media (max-width: 768px) {
   .scroll-stack-inner {
-    padding: 8vh 1rem 35rem;
+    padding: 8vh 1rem 100rem;
   }
   .scroll-stack-card {
     height: 46rem; /* Expanded vertical height for stacked layout on mobile */
@@ -168,5 +168,3 @@
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
-
-

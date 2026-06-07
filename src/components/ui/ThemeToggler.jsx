@@ -217,8 +217,8 @@ function ThemeToggler({
   };
 
   const iconStyle = {
-    width: isMobile ? '16px' : '20px',
-    height: isMobile ? '16px' : '20px',
+    width: isMobile ? '12px' : '20px',
+    height: isMobile ? '12px' : '20px',
     transition: 'stroke 0.2s ease',
   };
 

@@ -7,7 +7,7 @@ import React, {
   useContext,
 } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { gsap } from 'gsap';
 import AudioPlayer from 'react-modern-audio-player';
 import GlassSurface from '../ui/GlassSurface';
@@ -120,6 +120,53 @@ function StaggeredMenu({
   const { darkMode } = useContext(AppContext);
   const isDark = darkMode?.value;
   const [isMobile, setIsMobile] = useState(false);
+  const [showButton, setShowButton] = useState(false);
+
+  const location = useLocation();
+
+  useEffect(() => {
+    const container = document.querySelector('.app-scroll-container');
+    const scrollEl = container || document.documentElement;
+
+    // Track actual scroll position for scrollable pages
+    const handleScroll = () => {
+      const isScrollable = scrollEl.scrollHeight > scrollEl.clientHeight + 10;
+      if (isScrollable) {
+        const isAtBottom = scrollEl.scrollTop + scrollEl.clientHeight >= scrollEl.scrollHeight - 80;
+        setShowButton(isAtBottom);
+      }
+    };
+
+    // Detect wheel intent for non-scrollable pages (deltaY > 0 = scrolling down)
+    const handleWheel = (e) => {
+      const isScrollable = scrollEl.scrollHeight > scrollEl.clientHeight + 10;
+      if (isScrollable) {
+        const isAtBottom = scrollEl.scrollTop + scrollEl.clientHeight >= scrollEl.scrollHeight - 80;
+        if (e.deltaY > 0 && isAtBottom) {
+          setShowButton(true);
+        } else if (e.deltaY < 0 || !isAtBottom) {
+          setShowButton(false);
+        }
+      } else if (e.deltaY > 0) {
+        // User scrolled down — reveal menu
+        setShowButton(true);
+      } else if (e.deltaY < 0) {
+        // User scrolled back up — hide menu
+        setShowButton(false);
+      }
+    };
+
+    // Always start hidden on every page load/route change
+    setShowButton(false);
+
+    scrollEl.addEventListener('scroll', handleScroll);
+    window.addEventListener('wheel', handleWheel, { passive: true });
+
+    return () => {
+      scrollEl.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('wheel', handleWheel);
+    };
+  }, [location.pathname]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -156,10 +203,10 @@ function StaggeredMenu({
       }
       preLayerElsRef.current = preLayers;
 
-      const offscreen = position === 'left' ? -100 : 100;
-      gsap.set([panel, ...preLayers], { xPercent: offscreen, opacity: 1 });
+      gsap.set(panel, { yPercent: 100, opacity: 1 });
+      preLayers.forEach((el) => gsap.set(el, { yPercent: 100, opacity: 1 }));
       if (preContainer) {
-        gsap.set(preContainer, { xPercent: 0, opacity: 1 });
+        gsap.set(preContainer, { yPercent: 0, opacity: 1 });
       }
       gsap.set(plusH, { transformOrigin: '50% 50%', rotate: 0 });
       gsap.set(plusV, { transformOrigin: '50% 50%', rotate: 90 });
@@ -174,7 +221,6 @@ function StaggeredMenu({
 
   const buildOpenTimeline = useCallback(() => {
     const panel = panelRef.current;
-    const layers = preLayerElsRef.current;
     if (!panel) return null;
 
     openTlRef.current?.kill();
@@ -190,10 +236,6 @@ function StaggeredMenu({
     const socialLinks = Array.from(panel.querySelectorAll('.sm-socials-link'));
     const footerCredit = panel.querySelector('.sm-panel-footer-credit');
 
-    const offscreen = position === 'left' ? -100 : 100;
-    const layerStates = layers.map((el) => ({ el, start: offscreen }));
-    const panelStart = offscreen;
-
     if (itemEls.length) gsap.set(itemEls, { yPercent: 140, rotate: 10 });
     if (numberEls.length) gsap.set(numberEls, { '--sm-num-opacity': 0 });
     if (socialTitle) gsap.set(socialTitle, { opacity: 0 });
@@ -202,28 +244,14 @@ function StaggeredMenu({
 
     const tl = gsap.timeline({ paused: true });
 
-    layerStates.forEach((ls, i) => {
-      tl.fromTo(
-        ls.el,
-        { xPercent: ls.start },
-        {
-          xPercent: 0,
-          duration: 0.5,
-          ease: 'power4.out',
-        },
-        i * 0.07,
-      );
-    });
-
-    const lastTime = layerStates.length ? (layerStates.length - 1) * 0.07 : 0;
-    const panelInsertTime = lastTime + (layerStates.length ? 0.08 : 0);
-    const panelDuration = 0.65;
+    const panelInsertTime = 0;
+    const panelDuration = 0.7;
 
     tl.fromTo(
       panel,
-      { xPercent: panelStart },
+      { yPercent: 100 },
       {
-        xPercent: 0,
+        yPercent: 0,
         duration: panelDuration,
         ease: 'power4.out',
       },
@@ -305,7 +333,7 @@ function StaggeredMenu({
 
     openTlRef.current = tl;
     return tl;
-  }, [position]);
+  }, []);
 
   const playOpen = useCallback(() => {
     if (busyRef.current) return;
@@ -331,10 +359,9 @@ function StaggeredMenu({
 
     const all = [...layers, panel];
     closeTweenRef.current?.kill();
-    const offscreen = position === 'left' ? -100 : 100;
 
     closeTweenRef.current = gsap.to(all, {
-      xPercent: offscreen,
+      yPercent: 100,
       duration: 0.32,
       ease: 'power3.in',
       overwrite: 'auto',
@@ -355,7 +382,7 @@ function StaggeredMenu({
         busyRef.current = false;
       },
     });
-  }, [position]);
+  }, []);
 
   const animateIcon = useCallback((opening) => {
     const icon = iconRef.current;
@@ -444,6 +471,23 @@ function StaggeredMenu({
       ease: 'power4.out',
     });
   }, []);
+
+  const prevShowRef = useRef(false);
+  useEffect(() => {
+    if (showButton === prevShowRef.current) return;
+    prevShowRef.current = showButton;
+    if (showButton && !openRef.current) {
+      openRef.current = true;
+      setOpen(true);
+      onMenuOpen?.();
+      playOpen();
+    } else if (!showButton && openRef.current) {
+      openRef.current = false;
+      setOpen(false);
+      onMenuClose?.();
+      playClose();
+    }
+  }, [showButton, playOpen, playClose, onMenuOpen, onMenuClose]);
 
   const toggleMenu = useCallback(() => {
     const target = !openRef.current;
@@ -577,7 +621,7 @@ function StaggeredMenu({
         </div>
         <button
           ref={toggleBtnRef}
-          className="sm-toggle"
+          className={`sm-toggle${!showButton && !open ? ' sm-toggle-hidden' : ''}`}
           aria-label={open ? 'Close menu' : 'Open menu'}
           aria-expanded={open}
           aria-controls="staggered-menu-panel"

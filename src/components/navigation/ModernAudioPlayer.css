@@ -201,3 +201,25 @@
 .sm-player-drawer-container .rmap-volume-container .rmap-volume-panel {
   bottom: 30px !important;
 }
+
+@media (max-width: 576px) {
+  .sm-player-drawer-container .rmap-player-provider {
+    padding: 8px !important;
+  }
+  .sm-player-drawer-container .rmap-interface-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 8px !important;
+  }
+  .sm-player-drawer-container .rmap-progress-container,
+  .sm-player-drawer-container .rmap-track-info-container {
+    width: 100% !important;
+  }
+  .sm-player-drawer-container [style*="grid-area: row1-1"],
+  .sm-player-drawer-container [style*="grid-area: row1-2"],
+  .sm-player-drawer-container [style*="grid-area: row1-3"] {
+    justify-self: center !important;
+    width: auto !important;
+  }
+}

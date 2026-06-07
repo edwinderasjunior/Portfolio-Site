@@ -98,7 +98,15 @@ const ProjectCard = (props) => {
             {parseBodyText(project.bodyText)}
           </div>
           {project.links && (
-            <div className="card-project-links" style={{ marginTop: 'auto' }}>
+            <div
+              className="card-project-links"
+              style={{
+                marginTop: 'auto',
+                display: 'flex',
+                flexWrap: 'wrap',
+                gap: '8px',
+              }}
+            >
               {project.links.map((link) => {
                 const hrefStr = link.href ? String(link.href).toLowerCase() : '';
                 const textStr = link.text ? String(link.text).toLowerCase() : '';

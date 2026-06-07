@@ -103,18 +103,19 @@ const NavBar = () => {
   // Calculate width dynamically; scale down on mobile screens to prevent overflow
   const calculatedWidth = isMobile
     ? Math.min(
-      (navigationItems.length + 1) * 44 + 20 + (hasResume ? 10 : 0) + 12,
-      window.innerWidth - 24,
+      (navigationItems.length + 1) * 30 + 8 + (hasResume ? 4 : 0) + 4,
+      window.innerWidth - 16,
     )
     : (navigationItems.length + 1) * 60 + 32 + (hasResume ? 24 : 0) + 16;
 
   return (
-    <div style={styles.dockFixedWrapper}>
+    <div style={{ ...styles.dockFixedWrapper, top: isMobile ? '48px' : '24px' }}>
       {navigationItems.length > 0 && (
         <GlassSurface
           width={calculatedWidth}
-          height={isMobile ? 52 : 64}
-          borderRadius={isMobile ? 18 : 24}
+          height="auto"
+          minHeight={isMobile ? 32 : 64}
+          borderRadius={isMobile ? 10 : 24}
           borderWidth={0.08}
           brightness={darkMode?.value ? 60 : 85}
           opacity={0.9}
@@ -141,11 +142,12 @@ const NavBar = () => {
               WebkitBackdropFilter: 'none',
               width: '100%',
               height: '100%',
-              padding: isMobile ? '2px 8px' : '4px 12px',
+              padding: isMobile ? '1px 3px' : '4px 12px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: isMobile ? '6px' : '12px',
+              flexWrap: 'wrap',
+              gap: isMobile ? '2px' : '12px',
             }}
           >
             {navigationItems.map((item) => {
@@ -168,9 +170,9 @@ const NavBar = () => {
                       style={{
                         ...styles.verticalDividerStyle,
                         backgroundColor: dividerColor,
-                        height: isMobile ? '16px' : '24px',
-                        marginLeft: isMobile ? '2px' : '4px',
-                        marginRight: isMobile ? '2px' : '4px',
+                        height: isMobile ? '10px' : '24px',
+                        marginLeft: isMobile ? '1px' : '4px',
+                        marginRight: isMobile ? '1px' : '4px',
                       }}
                     />
                   )}
@@ -180,8 +182,8 @@ const NavBar = () => {
                       style={{
                         background: 'transparent',
                         backgroundColor: 'transparent',
-                        width: isMobile ? '36px' : '48px',
-                        height: isMobile ? '36px' : '48px',
+                        width: isMobile ? '26px' : '48px',
+                        height: isMobile ? '26px' : '48px',
                       }}
                     >
                       <Link
@@ -201,8 +203,8 @@ const NavBar = () => {
                         <IconComponent
                           style={{
                             ...styles.iconVector,
-                            width: isMobile ? '16px' : '20px',
-                            height: isMobile ? '16px' : '20px',
+                            width: isMobile ? '12px' : '20px',
+                            height: isMobile ? '12px' : '20px',
                           }}
                           stroke={isActive ? activeColor : defaultColor}
                         />
@@ -218,9 +220,9 @@ const NavBar = () => {
               style={{
                 ...styles.verticalDividerStyle,
                 backgroundColor: dividerColor,
-                height: isMobile ? '16px' : '24px',
-                marginLeft: isMobile ? '2px' : '4px',
-                marginRight: isMobile ? '2px' : '4px',
+                height: isMobile ? '10px' : '24px',
+                marginLeft: isMobile ? '1px' : '4px',
+                marginRight: isMobile ? '1px' : '4px',
               }}
             />
 
@@ -229,8 +231,8 @@ const NavBar = () => {
                 style={{
                   background: 'transparent',
                   backgroundColor: 'transparent',
-                  width: isMobile ? '36px' : '48px',
-                  height: isMobile ? '36px' : '48px',
+                  width: isMobile ? '26px' : '48px',
+                  height: isMobile ? '26px' : '48px',
                 }}
               >
                 <ThemeToggler

@@ -135,6 +135,18 @@ function ScrollStack({
         blur = depth * blurAmount;
       }
 
+      // Calculate opacity for scroll reveal
+      let opacity = 1;
+      if (i > 0) {
+        const revealDistance = 350; // fade in over 350px of scroll
+        const revealStart = pinStart - revealDistance;
+        if (scrollTop < revealStart) {
+          opacity = 0;
+        } else if (scrollTop < pinStart) {
+          opacity = (scrollTop - revealStart) / revealDistance;
+        }
+      }
+
       let translateY = 0;
       const isPinned = scrollTop >= pinStart && scrollTop <= pinEnd;
 
@@ -149,6 +161,7 @@ function ScrollStack({
         scale: 1,
         rotation: 0,
         blur: Math.round(blur * 100) / 100,
+        opacity: Math.round(opacity * 100) / 100,
       };
 
       const lastTransform = lastTransformsRef.current.get(i);
@@ -156,7 +169,8 @@ function ScrollStack({
         || Math.abs(lastTransform.translateY - newTransform.translateY) > 0.1
         || Math.abs(lastTransform.scale - newTransform.scale) > 0.001
         || Math.abs(lastTransform.rotation - newTransform.rotation) > 0.1
-        || Math.abs(lastTransform.blur - newTransform.blur) > 0.1;
+        || Math.abs(lastTransform.blur - newTransform.blur) > 0.1
+        || Math.abs(lastTransform.opacity - newTransform.opacity) > 0.01;
 
       if (hasChanged) {
         const transform = `translate3d(0, ${newTransform.translateY}px, 0) `
@@ -166,6 +180,7 @@ function ScrollStack({
 
         card.style.transform = transform;
         card.style.filter = filter;
+        card.style.opacity = newTransform.opacity;
 
         lastTransformsRef.current.set(i, newTransform);
       }
